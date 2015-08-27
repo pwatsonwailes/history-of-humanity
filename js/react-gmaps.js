@@ -10,7 +10,7 @@ var GMap = React.createClass({
 		"stylers": [{
 			"visibility": "on"
 		}, {
-			"color": "#12374c"
+			"color": "#DDD4CB"
 		}]
 	}, {
 		"featureType": "poi",
@@ -64,7 +64,7 @@ var GMap = React.createClass({
 		"featureType": "administrative.country",
 		"elementType": "geometry.stroke",
 		"stylers": [{
-			"color": "#194966"
+			"color": "#F7F5F2"
 		}, {
 			"visibility": "on"
 		}, {
@@ -79,7 +79,7 @@ var GMap = React.createClass({
 		"featureType": "water",
 		"elementType": "geometry.fill",
 		"stylers": [{
-			"color": "#194966"
+			"color": "#F7F5F2"
 		}, {
 			"visibility": "on"
 		}]
@@ -114,20 +114,48 @@ var GMap = React.createClass({
 	},
 
 	componentDidUpdate: function () {
-		for (var i = 0; i < this.markers.length; i++) {
-			this.markers[i].setMap(null);
-		}
+		this.clearMarkers();
 
-		for (var i = this.props.selectedItems.length - 1; i >= 0; i--) {
-			var currentItem = this.props.selectedItems[i];
-			for (var j = currentItem.latlong.length - 1; j >= 0; j--) {
-				var marker = new google.maps.Marker({
-					position: new google.maps.LatLng(currentItem.latlong[j][0], currentItem.latlong[j][1]),
-					map: this.map
-				});
+		if (this.props.items.length > 0)
+		{
+			var x = this.props.pointer * this.props.show;
+			var y = this.props.pointer * this.props.show + this.props.show;
+			var year = this.props.items[x].year;
 
-				this.markers.push(marker);
+			for (var i = x; i < y; i++) {
+				var currentItem = this.props.items[i];
+
+				if (isset(currentItem.latlong) && currentItem.latlong.length > 0)
+				{
+					for (var j = currentItem.latlong.length - 1; j >= 0; j--) {
+						var marker = new MarkerWithLabel({
+							icon: {
+								path: google.maps.SymbolPath.CIRCLE,
+								scale: 0,
+							},
+							labelAnchor: new google.maps.Point(10, 10),
+							labelClass: "label",
+							position: new google.maps.LatLng(currentItem.latlong[j][0], currentItem.latlong[j][1]),
+							map: this.map
+						});
+						
+						this.markers.push(marker);
+					}
+				}
 			}
+
+			this.setMapOnAll(this.map);
+		}
+	},
+
+	clearMarkers: function () {
+		this.setMapOnAll(null);
+		this.markers = [];
+	},
+
+	setMapOnAll: function (map) {
+		for (var i = 0; i < this.markers.length; i++) {
+			this.markers[i].setMap(map);
 		}
 	},
 
@@ -188,11 +216,11 @@ var GMap = React.createClass({
 		var styles = {
 			display: 'block',
 			height: '500px',
-			width: '800px'
+			width: '1200px'
 		}
 
 		return (
-			React.createElement("div", { className: "gmap" },
+			React.createElement("div", { id: "gmap" },
 				React.createElement("div", { ref: "mapCanvas", id: "mapCanvas", style: styles })
 			)
 		)

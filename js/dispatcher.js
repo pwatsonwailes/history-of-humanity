@@ -7,10 +7,11 @@ var hoh = React.createClass({
 			startDate: 0,
 			endDate: 0,
 			pointer: 0,
-			show: 10,
+			show: 25,
 			tag: false,
 			selectedItems: [],
 			itemDetail: false,
+			itemDetailActive: false,
 			wikiData: false,
 			wikiImages: false
 		}
@@ -39,7 +40,7 @@ var hoh = React.createClass({
 
 			if (this.data !== false) {
 				if (dateType === false) {
-					var sDate = 1901;
+					var sDate = 1750;
 					var eDate = 2015;
 
 					newState.startDate = sDate;
@@ -51,7 +52,7 @@ var hoh = React.createClass({
 				}
 
 				for (var i = sDate; i <= eDate; i++) {
-					var loopEnd = (isset(this.data[i])) ? this.data[i].length -1 : 0;
+					var loopEnd = (isset(this.data[i])) ? this.data[i].length : 0;
 
 					for (var j = 0; j < loopEnd; j++) {
 						if ((newTag !== false && this.data[i][j].tags.indexOf(newTag) > -1) || newTag === false) {
@@ -84,8 +85,15 @@ var hoh = React.createClass({
 	},
 
 	setItemDetail: function (e) {
-		var year = e.target.dataset.year;
-		var position = e.target.dataset.position;
+		if (isset(e.target.parentNode.dataset.year))
+			var year = e.target.parentNode.dataset.year;
+		else if (isset(e.target.dataset.year))
+			var year = e.target.dataset.year;
+
+		if (isset(e.target.parentNode.dataset.position))
+			var position = e.target.parentNode.dataset.position;
+		else if (isset(e.target.dataset.position))
+			var position = e.target.dataset.position;
 
 		var itemData = this.data[year][position];
 
@@ -95,7 +103,14 @@ var hoh = React.createClass({
 			this.setWikiData(wikiTitle);
 		}
 
-		this.setState({ itemDetail: itemData });
+		this.setState({
+			itemDetail: itemData,
+			itemDetailActive: true
+		});
+	},
+
+	hideItemDetail: function (e) {
+		this.setState({ itemDetailActive: false });
 	},
 
 	setWikiData: function (wikiTitle) {
@@ -152,20 +167,27 @@ var hoh = React.createClass({
 	},
 
 	updateDate: function (e) {
-		if (e.target.name === 'startDate' && e.target.value !== this.state.startDate)
-			this.updateItems('startDate', e.target.value, this.state.tag);
-		else if (e.target.name === 'endDate' && e.target.value !== this.state.endDate)
-			this.updateItems('endDate', e.target.value, this.state.tag);
+		var year = Math.floor(e.x);
+
+		if (e.name === 'startDate' && year !== this.state.startDate)
+			this.updateItems('startDate', year, this.state.tag);
+		else if (e.name === 'endDate' && year !== this.state.endDate)
+			this.updateItems('endDate', year, this.state.tag);
 	},
 
 	updatePointer: function (e) {
 		var update = true;
 
-		if (e.target.dataset.pointer === '1' && (this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.show)))
+		if (isset(e.target.parentNode.dataset.pointer))
+			var pointer = e.target.parentNode.dataset.pointer;
+		else if (isset(e.target.dataset.pointer))
+			var pointer = e.target.dataset.pointer;
+
+		if (pointer === '1' && (this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.show)))
 			var newPointer = this.state.pointer + 1
-		else if (e.target.dataset.pointer === '1' && (this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.show)))
+		else if (pointer === '1' && (this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.show)))
 			update = false;
-		else if (e.target.dataset.pointer === '0' && this.state.pointer > 0)
+		else if (pointer === '0' && this.state.pointer > 0)
 			var newPointer = this.state.pointer - 1;
 		else
 			var newPointer = 0;
@@ -175,7 +197,7 @@ var hoh = React.createClass({
 	},
 
 	updateTag: function (e) {
-		var newVal = e.target[e.target.selectedIndex].value;
+		var newVal = e.target.dataset.value;
 
 		if (newVal === '')
 			newVal = false;
@@ -184,12 +206,25 @@ var hoh = React.createClass({
 	},
 
 	render: function () {
+		var className = (this.state.itemDetailActive) ? 'active' : '';
 		var highchartKey = this.state.startDate.toString() + this.state.endDate.toString();
-		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag;
+		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
 
 		return (
 			React.createElement("div", null,
+				React.createElement(GMap, {
+					initialZoom: 3,
+					centerLat: 30,
+					centerLng: 30,
+					mapsKey: mapsKey,
+					items: this.state.selectedItems,
+					pointer: this.state.pointer,
+					show: this.state.show
+				}),
 				React.createElement(Controls, {
+					startDate: this.state.startDate,
+					endDate: this.state.endDate,
+					tag: this.state.tag,
 					inputHandler: this.updateDate,
 					tagHandler: this.updateTag,
 					buttonHandler: this.updatePointer
@@ -200,14 +235,11 @@ var hoh = React.createClass({
 					show: this.state.show,
 					itemHander: this.setItemDetail
 				}),
-				React.createElement(GMap, {
-					initialZoom: 3,
-					centerLat: 30,
-					centerLng: 30,
-					mapsKey: mapsKey,
-					selectedItems: this.state.selectedItems
-				}),
+				React.createElement("span", { id: 'hideItemDetail', className: className, onClick: this.hideItemDetail },
+					React.createElement("i", { className: 'fa fa-times' })
+				),
 				React.createElement(ItemDetail, {
+					active: this.state.itemDetailActive,
 					itemDetail: this.state.itemDetail,
 					wikiData: this.state.wikiData,
 					wikiImages: this.state.wikiImages
