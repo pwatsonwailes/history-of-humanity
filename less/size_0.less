@@ -74,7 +74,7 @@ body {
 	}
 }
 
-#gmap,
+#mapAndControls,
 #controls,
 #items,
 #itemDetail {
@@ -82,16 +82,15 @@ body {
 	width: 1200px;
 }
 
-#gmap {
-	.box-shadow(0 10px 55px 0 rgba(0, 0, 0, 0.3));
-	margin-bottom: 30px;
-}
+#mapAndControls { position: relative; }
+
+#gmap { .box-shadow(0 10px 55px 0 rgba(0, 0, 0, 0.3)); }
 
 #controls {
 	background: rgba(0, 0, 0, 0.5);
+	bottom: 0;
 	padding: 11px 11px 18px;
-	position: relative;
-	top: -128px;
+	position: absolute;
 
 	p {
 		.border-radius(3px);
@@ -162,21 +161,20 @@ body {
 
 	&#backButton,
 	&#forwardButton {
-		bottom: -65px;
+		bottom: 35px;
 	}
 
-	&#galleryBack,
-	&#backButton {
+	&#backButton { left: -50px; }
+	&#forwardButton { right: -50px; }
+
+	&#backButton .fa,
+	&#galleryBack .fa {
 		left: -1px;
-
-		.fa { left: -1px; }
 	}
 
-	&#galleryForward,
-	&#forwardButton {
-		right: 0;
-
-		.fa { left: 1px; }
+	&#forwardButton .fa,
+	&#galleryForward .fa {
+		left: 1px;
 	}
 
 	&:hover {
@@ -192,15 +190,15 @@ body {
 	.yearTitle {
 		border-bottom: 1px solid #e8e8e8;
 		color: #727272;
-		margin-bottom: 50px;
-		padding-bottom: 50px;
+		margin: 60px 0 30px;
+		padding-bottom: 30px;
 	}
 
 	.itemPanel {
 		.box-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
 		background: #fff;
 		cursor: pointer;
-		margin-bottom: 50px;
+		margin-bottom: 30px;
 		padding: 1em;
 
 		p {
@@ -210,7 +208,7 @@ body {
 }
 
 #itemDetail {
-	.box-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
+	.box-shadow(0 4px 10px rgba(0, 0, 0, 0.23));
 	.transition(right 0.8s);
 	background: #fff;
 	overflow-y: auto;

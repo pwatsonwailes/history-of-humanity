@@ -212,23 +212,25 @@ var hoh = React.createClass({
 
 		return (
 			React.createElement("div", null,
-				React.createElement(GMap, {
-					initialZoom: 3,
-					centerLat: 30,
-					centerLng: 30,
-					mapsKey: mapsKey,
-					items: this.state.selectedItems,
-					pointer: this.state.pointer,
-					show: this.state.show
-				}),
-				React.createElement(Controls, {
-					startDate: this.state.startDate,
-					endDate: this.state.endDate,
-					tag: this.state.tag,
-					inputHandler: this.updateDate,
-					tagHandler: this.updateTag,
-					buttonHandler: this.updatePointer
-				}),
+				React.createElement("div", { id: "mapAndControls" },
+					React.createElement(GMap, {
+						initialZoom: 3,
+						centerLat: 30,
+						centerLng: 30,
+						mapsKey: mapsKey,
+						items: this.state.selectedItems,
+						pointer: this.state.pointer,
+						show: this.state.show
+					}),
+					React.createElement(Controls, {
+						startDate: this.state.startDate,
+						endDate: this.state.endDate,
+						tag: this.state.tag,
+						inputHandler: this.updateDate,
+						tagHandler: this.updateTag,
+						buttonHandler: this.updatePointer
+					})
+				),
 				React.createElement(ItemList, {
 					items: this.state.selectedItems,
 					pointer: this.state.pointer,

@@ -229,7 +229,6 @@ function init () {
 	clock = new THREE.Clock();
 
 	renderer = new THREE.WebGLRenderer();
-	renderer.setSize( window.innerWidth-20, 600 );
 
 	scene = new THREE.Scene();
  
@@ -261,6 +260,8 @@ function init () {
 	}
  
 	$('bg').appendChild(renderer.domElement);
+
+	window.addEventListener('resize', onWindowResize, false);
 }
  
 function animate () {
@@ -292,4 +293,22 @@ function render () {
 	mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500);
 	updateLightPosition();
 	renderer.render( scene, camera );
+	onWindowResize();
+}
+
+function onWindowResize () {
+	var dims = getViewportSize();
+
+	var cWidth = dims.width - 17;
+	var cHeight = cWidth / 16 * 5;
+
+	if (cHeight < 600)
+		cHeight = 600;
+	else if (cHeight > 850)
+		cHeight = 850;
+
+	camera.aspect = cWidth / cHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize(cWidth, cHeight);
 }
