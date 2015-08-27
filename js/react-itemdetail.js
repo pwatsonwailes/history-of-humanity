@@ -9,6 +9,12 @@ var ItemDetail = React.createClass({
 
 	componentDidMount: function(props) {},
 
+	componentWillReceiveProps: function () {
+		this.setState({
+			galleryPointer: 0
+		});
+	},
+
 	componentDidUpdate: function () {},
 
 	renderRelatedLinks: function (link) {

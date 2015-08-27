@@ -128,10 +128,14 @@ var hoh = React.createClass({
 					for (var i = newState.wikiData.images.length - 1; i >= 0; i--) {
 						var title = newState.wikiData.images[i].title.replace('File:', '').replace(/\s+/g,"_");
 
-						if ((title === 'Commons-logo.svg' || title === 'File:P_vip.svg') && i === 0)
+						if (title.indexOf('.jpg') === -1 && title.indexOf('.png') === -1 && i === 0) {
+							newState.wikiData.images.splice(i, 1);
 							self.setState(newState);
-						else if (title === 'Commons-logo.svg' || title === 'File:P_vip.svg')
+						}
+						else if (title.indexOf('.jpg') === -1 && title.indexOf('.png') === -1) {
+							newState.wikiData.images.splice(i, 1);
 							continue;
+						}
 
 						var imgLink = 'https://en.wikipedia.org/w/api.php?action=query&titles=Image:' + title + '&prop=imageinfo&iiprop=url&format=json';
 

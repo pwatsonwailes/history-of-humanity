@@ -77,8 +77,6 @@ var InputSlider = React.createClass({
 		var posX = e.clientX + this.start.x - this.offset.x;
 		var posY = e.clientY + this.start.y - this.offset.y;
 
-		console.log(posX);
-
 		return {
 			left: posX,
 			top: posY
