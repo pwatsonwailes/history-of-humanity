@@ -110,7 +110,8 @@ var hoh = React.createClass({
 	},
 
 	hideItemDetail: function (e) {
-		this.setState({ itemDetailActive: false });
+		if (e.target.id === 'hohContainer' || e.target.id === 'hideItemDetail' || e.target.parentNode.id === 'hideItemDetail')
+			this.setState({ itemDetailActive: false });
 	},
 
 	setWikiData: function (wikiTitle) {
@@ -123,39 +124,43 @@ var hoh = React.createClass({
 				var pageId = Object.keys(pageResponse.query.pages);
 				var newState = { wikiData: pageResponse.query.pages[pageId], wikiImages: [] };
 
-				for (var i = newState.wikiData.images.length - 1; i >= 0; i--) {
-					var title = newState.wikiData.images[i].title.replace('File:', '').replace(/\s+/g,"_");
+				if (isset(newState.wikiData.images)) {
+					for (var i = newState.wikiData.images.length - 1; i >= 0; i--) {
+						var title = newState.wikiData.images[i].title.replace('File:', '').replace(/\s+/g,"_");
 
-					if ((title === 'Commons-logo.svg' || title === 'File:P_vip.svg') && i === 0)
-						self.setState(newState);
-					else if (title === 'Commons-logo.svg' || title === 'File:P_vip.svg')
-						continue;
-
-					var imgLink = 'https://en.wikipedia.org/w/api.php?action=query&titles=Image:' + title + '&prop=imageinfo&iiprop=url&format=json';
-
-					if (i === 0) {
-						qwest.post('https://apis.builtvisible.com/history_of_humanity/', { url: imgLink }, { responseType: 'json' })
-						.then(function(imgResponse) {
-							if (isset(imgResponse.query.pages['-1']) && isset(imgResponse.query.pages['-1'].imageinfo))
-								newState.wikiImages.push(imgResponse.query.pages['-1'].imageinfo[0].url);
+						if ((title === 'Commons-logo.svg' || title === 'File:P_vip.svg') && i === 0)
 							self.setState(newState);
-						})
-						.catch(function(e, imgResponse) {
-							console.log(e);
-							self.setState(newState);
-						});
-					}
-					else {
-						qwest.post('https://apis.builtvisible.com/history_of_humanity/', { url: imgLink }, { responseType: 'json' })
-						.then(function(imgResponse) {
-							if (isset(imgResponse.query.pages['-1']) && isset(imgResponse.query.pages['-1'].imageinfo))
-								newState.wikiImages.push(imgResponse.query.pages['-1'].imageinfo[0].url);
-						})
-						.catch(function(e, imgResponse) {
-							console.log(e);
-						});
+						else if (title === 'Commons-logo.svg' || title === 'File:P_vip.svg')
+							continue;
+
+						var imgLink = 'https://en.wikipedia.org/w/api.php?action=query&titles=Image:' + title + '&prop=imageinfo&iiprop=url&format=json';
+
+						if (i === 0) {
+							qwest.post('https://apis.builtvisible.com/history_of_humanity/', { url: imgLink }, { responseType: 'json' })
+							.then(function(imgResponse) {
+								if (isset(imgResponse.query.pages['-1']) && isset(imgResponse.query.pages['-1'].imageinfo))
+									newState.wikiImages.push(imgResponse.query.pages['-1'].imageinfo[0].url);
+								self.setState(newState);
+							})
+							.catch(function(e, imgResponse) {
+								console.log(e);
+								self.setState(newState);
+							});
+						}
+						else {
+							qwest.post('https://apis.builtvisible.com/history_of_humanity/', { url: imgLink }, { responseType: 'json' })
+							.then(function(imgResponse) {
+								if (isset(imgResponse.query.pages['-1']) && isset(imgResponse.query.pages['-1'].imageinfo))
+									newState.wikiImages.push(imgResponse.query.pages['-1'].imageinfo[0].url);
+							})
+							.catch(function(e, imgResponse) {
+								console.log(e);
+							});
+						}
 					}
 				}
+				else
+					self.setState(newState);
 			}
 			else
 				self.setState({ wikiData: false, wikiImages: false });
@@ -211,7 +216,7 @@ var hoh = React.createClass({
 		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
 
 		return (
-			React.createElement("div", null,
+			React.createElement("div", { id: "hohContainer", onClick: this.hideItemDetail },
 				React.createElement("div", { id: "mapAndControls" },
 					React.createElement(GMap, {
 						initialZoom: 3,

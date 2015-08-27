@@ -14,7 +14,7 @@ var ItemDetail = React.createClass({
 	renderRelatedLinks: function (link) {
 		return (
 			React.createElement("li", { key: 'relatedLink' + link.link },
-				React.createElement("a", { href: link.link }, link.title)
+				React.createElement("a", { href: link.link, target: '_blank' }, link.title)
 			)
 		)
 	},
@@ -32,7 +32,7 @@ var ItemDetail = React.createClass({
 			return (
 				React.createElement("p", { key: 'mainLink', id: 'mainLink' },
 					React.createElement("span", null, 'Full article: '),
-					React.createElement("a", { href: this.props.itemDetail.links.main.link }, this.props.itemDetail.links.main.title)
+					React.createElement("a", { href: this.props.itemDetail.links.main.link, target: '_blank' }, this.props.itemDetail.links.main.title)
 				)
 			)
 		}
@@ -86,7 +86,7 @@ var ItemDetail = React.createClass({
 			var mainLink = this.renderMainLink();
 
 
-			if (this.props.wikiImages !== false) {
+			if (this.props.wikiImages !== false && this.props.wikiImages.length > 0) {
 				var gallery = [];
 				var n = (this.state.galleryPointer + 3 <= this.props.wikiImages.length) ? this.state.galleryPointer + 3 : this.props.wikiImages.length;
 
