@@ -4,21 +4,48 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>Humanity Since 1901 | Builtvisible</title>
+	<title>History of Modern Humanity | Builtvisible</title>
 
-	<script src="https://zorg.builtvisible.com//modules/_global/views/js/react.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js"></script>
-	<script src="functions.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
+	<script src="//maps.googleapis.com/maps/api/js"></script>
+
+	<script src="js/functions.js"></script>
+	<script src="js/markerwithlabel.js"></script>
+
+	<link href="less/compiled.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<h1>History of Humanity</h1>
-
+	<div id="bg"></div>
+	<div id="heading">
+		<header id="main_header">
+			<div id="logo_container">
+				<p>
+					<a href="/20-21-century/">
+						<img src="imgs/logo.png" alt="Home">
+					</a>
+				</p>
+			</div>
+			<div id="powered_by">
+				<ul class="unstyled inline">
+					<li id="reactjs"><a href="http://facebook.github.io/react/"><img src="imgs/react-logo.svg" alt="React.js logo"> React</a></li>
+					<li id="wikipedia"><a href="https://www.wikipedia.org/">W<small>ikipedi</small>a</a></li>
+				</ul>
+			</div>
+		</header>
+		<h1><span id="top_title">A History of Modern Humanity</span><br><span id="lower_title">The Post-Industrial Revolution World</span></h1>
+	</div>
 	<div id="hoh"></div>
 
-	<script src="react-controls.js"></script>
-	<script src="react-itemlist.js"></script>
-	<script src="react-itemdetail.js"></script>
-	<script src="react-gmaps.js"></script>
-	<script src="dispatcher.js"></script>
+	<script src="js/react-social.js"></script>
+	<script src="js/react-controls.js"></script>
+	<script src="js/react-gmaps.js"></script>
+	<script src="js/react-itemlist.js"></script>
+	<script src="js/react-itemdetail.js"></script>
+	<script src="js/dispatcher.js"></script>
+	<script>
+	init();
+	animate();
+	</script>
 </body>
 </html>

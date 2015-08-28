@@ -1,0 +1,238 @@
+/*
+ * Other imports (FontAwesome etc, if used)
+*/
+
+@import url(//fonts.googleapis.com/css?family=Amiri:400italic);
+@import url(//fonts.googleapis.com/css?family=Duru+Sans);
+@import url(//fonts.googleapis.com/css?family=Crimson+Text);
+@import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css);
+
+
+/*
+ * Theme mixins
+*/
+
+.odm-dropdown(@top: 0, @right: 0, @left: 0, @overflow-x: 'auto', @overflow-y: 'auto', @after-right: 0, @after-left: 0) {
+	.transition(opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms);
+	left: @left;
+	right: @right;
+	top: @top;
+	background: #fff;
+	list-style-type: none;
+	margin: 0;
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	z-index: 100;
+
+	li {
+		background: #eaeaea;
+		cursor: pointer;
+		font-size: 13px;
+		margin: 0 0 -1px;
+		z-index: 101;
+
+		&:hover { background-color: #fefeff; }
+		&:first-child { border-top: none; }
+
+		span,
+		a {
+			color: #aaa;
+			display: block;
+			padding: 10px 20px;
+			z-index: 102;
+		}
+	}
+
+	&:after,
+	&:before {
+		left: @after-left;
+		right: @after-right;
+	}
+
+	&.active {
+		opacity: 1;
+		max-height: 400px;
+		overflow-y: scroll;
+
+		.viewport_container {
+			height: 100%;
+			overflow: hidden;
+			position: relative;
+			width: 100%;
+
+			.viewport {
+				bottom: 0;
+				left: 0;
+				overflow-x: @overflow-x;
+				overflow-y: @overflow-y;
+				position: absolute;
+				right: -18px;
+				top: 0;
+			}
+		}
+	}
+}
+
+
+/*
+ * Compiled overrides
+*/
+
+
+
+
+/*
+ * Main classes
+*/
+
+.label {
+	.border-radius(50%);
+	box-sizing: border-box;
+	background: #d12727;
+	border: 2px solid #fff;
+	cursor: default!important;
+	height: 10px;
+	width: 10px;
+}
+
+
+.slider {
+	background-color: #b9b9b9;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+
+	.value {
+		background-color: #00b5ff;
+		border-radius: 3px;
+		position: absolute;
+	}
+
+	.handle {
+		height: 8px;
+		position: absolute;
+		width: 8px;
+
+		&:after {
+			content: '';
+			display: block;
+			position: relative;
+		}
+	}
+}
+
+.slider_x .handle:after,
+.slider_y .handle:after {
+	.border-radius(50%);
+	background-color: #00b5ff;
+	border: 1px solid #00b5ff;
+	height: 12px;
+	width: 12px;
+}
+
+.slider_x {
+	height: 3px;
+
+	.handle {
+		top: 0;
+		height: 100%;
+
+		&:after {
+			top: -5px;
+			left: -6px;
+		}
+	}
+}
+
+.slider_y {
+	width: 3px;
+
+	.handle {
+		left: 0;
+		width: 100%;
+
+		&:after {
+			top: -6px;
+			left: -2px;
+		}
+	}
+}
+
+.slider_xy {
+	background-color: #00b5ff;
+	border-radius: 0;
+	position: relative;
+	height: 100%;
+	width: 100%;
+
+	.handle {
+		position: absolute;
+
+		&:after {
+			position: relative;
+			display: block;
+			top: -4px;
+			left: -4px;
+			width: 8px;
+			height: 8px;
+			background-color: rgba(0, 0, 0, 0);
+			border: 2px solid #fff;
+			border-radius: 50%;
+			content: '';
+		}
+	}
+}
+
+.dropdown { .odm-dropdown() }
+
+/*
+ * Size-agnostic layout rules
+*/
+
+@import "size_0.less";
+
+
+
+/*
+	Style overrides for IE6-8
+	http://jonikorpi.com/leaving-old-IE-behind/
+*/
+
+.ie {
+
+}
+
+/*
+	Small
+*/
+@media screen and (max-width: 639px) { @import "size_640.less"; }
+@media screen and (min-width: 640px) { @import "size_640_up.less"; }
+
+@media screen and (max-width: 799px) { @import "size_800.less"; }
+@media screen and (min-width: 800px) { @import "size_800_up.less"; }
+
+@media screen and (min-width: 640px) and (max-width: 799px) { @import "size_640_800.less"; }
+
+/*
+	Mid
+*/
+
+@media screen and (max-width: 1023px) { @import "size_1024.less"; }
+@media screen and (min-width: 1024px) { @import "size_1024_up.less"; }
+
+@media screen and (max-width: 1375px) { @import "size_1376.less"; }
+@media screen and (min-width: 1376px) { @import "size_1376_up.less"; }
+
+@media screen and (min-width: 800px) and (max-width: 1023px) { @import "size_800_1024.less"; }
+@media screen and (min-width: 1024px) and (max-width: 1375px) { @import "size_1024_1376.less"; }
+
+/*
+	Large
+*/
+@media screen and (min-width: 1376px) and (max-width: 1839px) { @import "size_1376_1840.less"; }
+
+@media screen and (max-width: 1839px) { @import "size_1840.less"; }
+@media screen and (min-width: 1840px) { @import "size_1840_up.less"; }
