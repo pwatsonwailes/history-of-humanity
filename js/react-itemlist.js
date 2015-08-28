@@ -63,11 +63,20 @@ var ItemList = React.createClass({
 	},
 
 	loadingItems: function () {
-		return React.createElement("li", null, 'Loading data')
+		return React.createElement("li", { className: 'yearTitle' }, 'Loading data')
+	},
+
+	noItems: function () {
+		return React.createElement("li", { className: 'yearTitle' }, 'No data for your selection')
 	},
 
 	render: function () {
-		var itemsList = (this.props.items === false) ? this.loadingItems() : this.renderItems();
+		if (this.props.items === false)
+			var itemsList = this.loadingItems()
+		else if (this.props.items.length > 0)
+			var itemsList = this.renderItems();
+		else
+			var itemsList = this.noItems();
 
 		return (
 			React.createElement("div", { id: "items" },
