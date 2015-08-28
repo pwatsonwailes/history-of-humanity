@@ -98,6 +98,10 @@ var GMap = React.createClass({
 		}]
 	}],
 
+	componentWillMount: function() {
+		this.updateDimensions();
+	},
+
 	componentDidMount: function(props) {
 		var self = this;
 		// load initial map
@@ -107,10 +111,22 @@ var GMap = React.createClass({
 		google.maps.event.addListener(this.map, 'center_changed', function() {
 			self.checkBounds(self.map);
 		});
+
+		google.maps.event.addDomListener(window, "resize", function() {
+			var center = self.map.getCenter();
+			google.maps.event.trigger(self.map, "resize");
+			self.map.setCenter(center);
+		});
+
+		window.addEventListener("resize", this.updateDimensions);
 	},
 
-	shouldComponentUpdate: function (newProps) {
-		return newProps.mapsKey !== this.props.mapsKey;
+	componentWillUnmount: function() {
+		window.removeEventListener("resize", this.updateDimensions);
+	},
+
+	shouldComponentUpdate: function (newProps, newState) {
+		return newProps.mapsKey !== this.props.mapsKey || newState.width !== this.state.width;
 	},
 
 	componentDidUpdate: function () {
@@ -147,6 +163,37 @@ var GMap = React.createClass({
 			this.setMapOnAll(this.map);
 		}
 	},
+
+	updateDimensions: function (returnStyles) {
+		var dims = getViewportSize();
+
+		var styles = {
+			height: '600px',
+			width: '1300px'
+		}
+
+		if (dims.width < 640) {
+			styles.height = '250px';
+			styles.width = '285px';
+		}
+		else if (dims.width > 640 && dims.width < 800) {
+			styles.height = '325px';
+			styles.width = '425px';
+		}
+		else if (dims.width > 800 && dims.width < 1024) {
+			styles.height = '455px';
+			styles.width = '625px';
+		}
+		else if (dims.width > 1024 && dims.width < 1376) {
+			styles.width = '900px';
+		}
+		else if (dims.width > 1376 && dims.width < 1840) {
+			styles.width = '1200px';
+		}
+
+		this.setState(styles);
+	},
+
 
 	clearMarkers: function () {
 		this.setMapOnAll(null);
@@ -213,24 +260,9 @@ var GMap = React.createClass({
 	},
 
 	render: function () {
-		if (!mobileCheck()) {
-			var styles = {
-				display: 'block',
-				height: '500px',
-				width: '1200px'
-			}
-		}
-		else {
-			var styles = {
-				display: 'block',
-				height: '350px',
-				width: '425px'
-			}
-		}
-
 		return (
 			React.createElement("div", { id: "gmap" },
-				React.createElement("div", { ref: "mapCanvas", id: "mapCanvas", style: styles })
+				React.createElement("div", { ref: "mapCanvas", id: "mapCanvas" })
 			)
 		)
 	}

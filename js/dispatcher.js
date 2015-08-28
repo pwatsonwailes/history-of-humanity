@@ -226,6 +226,7 @@ var hoh = React.createClass({
 
 		return (
 			React.createElement("div", { id: "hohContainer", onClick: this.hideItemDetail },
+				React.createElement(Social, null),
 				React.createElement("div", { id: "mapAndControls" },
 					React.createElement(GMap, {
 						initialZoom: 3,

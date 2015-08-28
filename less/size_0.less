@@ -12,12 +12,14 @@ body {
 	z-index: -1;
 }
 
+#hohContainer { .od-row(); }
+
 #heading {
 	.od-row();
-	margin: 100px auto;
-	width: 1280px;
 
-	#main_header {  }
+	#main_header {
+		margin: 0 auto;
+	}
 
 	#logo_container,
 	#powered_by {
@@ -74,6 +76,133 @@ body {
 	}
 }
 
+#socialButtons {
+	.transition(all 0.5s);
+	color: #cb317e;
+	position: absolute;
+	right: 0.5em;
+
+	&:hover,
+	&.active {
+		color: #00b5ff;
+
+		#socialIcons {
+			max-height: 500px;
+		}
+	}
+
+	.socialBox {
+		height: 36px;
+		position: relative;
+		width: 41px;
+	}
+
+	#socialIcons {
+		.od-row();
+		max-height: 0;
+		position: absolute;
+		right: 5px;
+		top: 37px;
+	}
+
+	#circleBg {
+		.border-radius(50%);
+		background-color: #fff;
+		display: block;
+		position: relative;
+		right: 0.9em;
+		
+		.fa-plus-circle {
+			left: -1px;
+			top: -4px;
+		}
+	}
+
+	.fa {
+		cursor: pointer;
+		position: relative;
+	}
+
+	.fa-plus-circle { font-size: 2em; }
+
+	.count,
+	.share {
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.count {
+		color: #525B67;
+		font-size: 14px;
+		left: -50px;
+		position: absolute;
+		text-align: right;
+		top: 6px;
+		width: 42px;
+	}
+
+	.share {
+		.border-radius(50%);
+		color: #fff;
+		display: inline-block;
+		height: 30px;
+		line-height: 28px;
+		position: absolute;
+		width: 31px;
+
+		&:hover {
+			color: #fff;
+			text-decoration: none;
+		}
+	}
+
+	.fa img {
+		position: relative;
+		top: 2px;
+		width: 16px;
+	}
+
+	.facebook,
+	.twitter,
+	.pinterest,
+	.stumbleupon,
+	.bufferapp {
+		height:100%;
+		text-align:center;
+		width:100%;
+		.border-radius(4px);
+	}
+
+	#twitter .share {
+		text-shadow: 1px 0 0 #0077be;
+		.background-image(linear-gradient(top, #26c3eb 0%, #0080d6 100%));
+	}
+
+	#facebook .share {
+		background:#3b5998;
+		text-shadow:1px 0 0 #26427e;
+		.background-image(linear-gradient(top, #3B5998 0%, #133783 100%));
+	}
+
+	#googleplus .share {
+		background:#6d6d6d;
+		text-shadow:1px 0 0 #222;
+		.background-image(linear-gradient(top, #6d6d6d 0%, #434343 100%));
+	}
+
+	#linkedin .share {
+		background:#6d6d6d;
+		text-shadow:1px 0 0 #26427e;
+		.background-image(linear-gradient(top, #74bbdb 0%, #007fb2 100%));
+	}
+
+	#stumbleupon .share {
+		background: #eb4924;
+		text-shadow: 1px 0 0 #26427e;
+		.background-image(linear-gradient(top, #eb4924 0%, #b12403 100%));
+	}
+}
+
 #mapAndControls,
 #controls,
 #items,
@@ -85,6 +214,8 @@ body {
 #mapAndControls { position: relative; }
 
 #gmap { .box-shadow(0 10px 55px 0 rgba(0, 0, 0, 0.3)); }
+
+#mapCanvas { display: block; }
 
 #controls {
 	background: rgba(0, 0, 0, 0.5);
@@ -122,6 +253,7 @@ body {
 
 	#startDate,
 	#endDate {
+		cursor: pointer;
 		display: inline-block;
 		margin: 0 1em 0 22px;
 		width: 280px;

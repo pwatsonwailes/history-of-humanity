@@ -90,6 +90,17 @@ function getViewportSize() {
 
 /*
 ---
+name: escapeRegExp
+description: escapes regex
+...
+*/
+
+function escapeRegExp (string) {
+	return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+/*
+---
 name: toggleMode
 description: simple class toggle for a trigger and target using Classie
 Inspired by //tympanus.net/codrops/2013/07/30/google-nexus-website-menu/
@@ -235,7 +246,7 @@ function init () {
 
 	for (p = 0; p < 200; p++) {
 		var particle = new THREE.Mesh(smokeGeo,smokeMaterial);
-		particle.position.set(Math.random()*500-250,Math.random()*500-250,Math.random()*1000-100);
+		particle.position.set(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 1000 - 30);
 		particle.rotation.z = Math.random() * 360;
 		scene.add(particle);
 		smokeParticles.push(particle);

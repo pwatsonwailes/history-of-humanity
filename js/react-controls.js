@@ -144,10 +144,12 @@ var InputSlider = React.createClass({
 		if (axis === 'x') valueStyle.width = pos.left;
 		if (axis === 'y') valueStyle.height = pos.top;
 
-		return React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, onClick: this.handleClick, onTouchStart: this.handleClick },
-			React.createElement('div', { className: 'value', style: valueStyle }),
-			React.createElement('div', { className: 'handle', ref: 'handle', onMouseDown: this.handleMoveStart, onTouchStart: this.handleMoveStart, onClick: this.handleSliderClick, style: pos })
-		);
+		return (
+			React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, onClick: this.handleClick, onTouchStart: this.handleClick },
+				React.createElement('div', { className: 'value', style: valueStyle }),
+				React.createElement('div', { className: 'handle', ref: 'handle', onMouseDown: this.handleMoveStart, onTouchStart: this.handleMoveStart, onClick: this.handleSliderClick, style: pos })
+			)
+		)
 	}
 });
 
