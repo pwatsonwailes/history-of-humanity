@@ -213,10 +213,19 @@ var GMap = React.createClass({
 	},
 
 	render: function () {
-		var styles = {
-			display: 'block',
-			height: '500px',
-			width: '1200px'
+		if (!mobileCheck()) {
+			var styles = {
+				display: 'block',
+				height: '500px',
+				width: '1200px'
+			}
+		}
+		else {
+			var styles = {
+				display: 'block',
+				height: '350px',
+				width: '425px'
+			}
 		}
 
 		return (

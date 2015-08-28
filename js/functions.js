@@ -59,24 +59,6 @@ function mobileCheck () {
 
 /*
 ---
-name: smallScreenCheck
-description: Checks if we're on a mobile device
-details: inspired by //stackoverflow.com/a/11381730/989439
-provides: smallScreenCheck
-...
-*/
-
-function smallScreenCheck () {
-	if (self.innerHeight)
-		return self.innerWidth < 1024;
-	else if (document.documentElement && document.documentElement.clientHeight)
-		return document.documentElement.clientWidth < 1024;
-	else if (document.body)
-		return document.body.clientWidth < 1024;
-}
-
-/*
----
 name: getViewportSize
 description: Gets the dimensions of the viewport
 ...
@@ -124,6 +106,8 @@ provides: toggleMode
 		else
 			this.options = options;
 
+		var mobile = mobileCheck();
+
 		this.activeTriggerClass = (isset(this.options.activeTriggerClass))
 			? this.options.activeTriggerClass
 			: 'active_trigger';
@@ -136,9 +120,9 @@ provides: toggleMode
 			? true
 			: false;
 
-		this.passThrough = (!isset(this.options.passThrough) || this.options.passThrough)
-			? true
-			: false;
+		this.passThrough = (isset(this.options.passThrough))
+			? this.options.passThrough
+			: mobile;
 
 		this.isMenuOpen = (!isset(this.options.autoTrigger) || !this.options.startOpen)
 			? false
@@ -151,8 +135,6 @@ provides: toggleMode
 
 	toggleMode.prototype = {
 		_init : function() {
-			this.mobile = mobileCheck();
-			this.smallScreen = smallScreenCheck();
 			this.eventType = mobileCheck() ? 'touchstart' : 'click';
 			this._initEvents();
 
@@ -299,8 +281,11 @@ function render () {
 function onWindowResize () {
 	var dims = getViewportSize();
 
-	var cWidth = dims.width - 17;
+	var cWidth = dims.width;
 	var cHeight = cWidth / 16 * 5;
+
+	if (!mobileCheck())
+		cWidth = cWidth - 17;
 
 	if (cHeight < 600)
 		cHeight = 600;

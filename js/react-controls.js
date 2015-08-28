@@ -1,8 +1,14 @@
-// based on https://raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
+// based on //raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
 var InputSlider = React.createClass({
 	displayName: 'InputSlider',
 
-	getDefaultProps: function getDefaultProps() {
+	getInitialState: function () {
+		return {
+			mobile: mobileCheck()
+		}
+	},
+
+	getDefaultProps: function () {
 		return {
 			axis: 'x',
 			xMin: 0,
@@ -27,7 +33,12 @@ var InputSlider = React.createClass({
 		return { top: top, left: left };
 	},
 
-	handleMouseDown: function (e) {
+	handleSliderClick: function (e) {
+		e.stopPropagation();
+		e.nativeEvent.stopImmediatePropagation();
+	},
+
+	handleMoveStart: function (e) {
 		e.preventDefault();
 		var dom = this.refs.handle.getDOMNode();
 
@@ -41,13 +52,14 @@ var InputSlider = React.createClass({
 			y: e.clientY
 		};
 
-		document.addEventListener('mousemove', this.handleDrag);
-		document.addEventListener('mouseup', this.handleDragEnd);
-	},
-
-	handleSliderClick: function (e) {
-		e.stopPropagation();
-		e.nativeEvent.stopImmediatePropagation();
+		if (!this.state.mobile) {
+			document.addEventListener('mousemove', this.handleDrag);
+			document.addEventListener('mouseup', this.handleDragEnd);
+		}
+		else {
+			document.addEventListener('touchmove', this.handleDrag);
+			document.addEventListener('touchend', this.handleDragEnd);
+		}
 	},
 
 	handleDrag: function (e) {
@@ -57,8 +69,15 @@ var InputSlider = React.createClass({
 
 	handleDragEnd: function (e) {
 		e.preventDefault();
-		document.removeEventListener('mousemove', this.handleDrag);
-		document.removeEventListener('mouseup', this.handleDragEnd);
+		
+		if (!this.state.mobile) {
+			document.removeEventListener('mousemove', this.handleDrag);
+			document.removeEventListener('mouseup', this.handleDragEnd);
+		}
+		else {
+			document.removeEventListener('touchmove', this.handleDrag);
+			document.removeEventListener('touchend', this.handleDragEnd);
+		}
 
 		if (this.props.onDragEnd) this.changeValue(this.getPos(e), true);
 	},
@@ -73,9 +92,14 @@ var InputSlider = React.createClass({
 	},
 
 	getPos: function (e) {
-		var rect = this.getDOMNode().getBoundingClientRect();
-		var posX = e.clientX + this.start.x - this.offset.x;
-		var posY = e.clientY + this.start.y - this.offset.y;
+		if (!this.state.mobile) {
+			var posX = e.clientX + this.start.x - this.offset.x;
+			var posY = e.clientY + this.start.y - this.offset.y;
+		}
+		else {
+			var posX = e.changedTouches[0].screenX - e.changedTouches[0].radiusX;
+			var posY = e.changedTouches[0].screenY - e.changedTouches[0].radiusY;
+		}
 
 		return {
 			left: posX,
@@ -120,9 +144,9 @@ var InputSlider = React.createClass({
 		if (axis === 'x') valueStyle.width = pos.left;
 		if (axis === 'y') valueStyle.height = pos.top;
 
-		return React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, onClick: this.handleClick },
+		return React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, onClick: this.handleClick, onTouchStart: this.handleClick },
 			React.createElement('div', { className: 'value', style: valueStyle }),
-			React.createElement('div', { className: 'handle', ref: 'handle', onMouseDown: this.handleMouseDown, onClick: this.handleSliderClick, style: pos })
+			React.createElement('div', { className: 'handle', ref: 'handle', onMouseDown: this.handleMoveStart, onTouchStart: this.handleMoveStart, onClick: this.handleSliderClick, style: pos })
 		);
 	}
 });
@@ -162,10 +186,10 @@ var Controls = React.createClass({
 	],
 
 	componentDidMount: function(props) {
-		new toggleMode(
+		window.tagToggler = new toggleMode(
 			$('tagHandler'),
 			$('tags'),
-			{ activeTargetClass: 'active', passThrough: false }
+			{ activeTargetClass: 'active' }
 		);
 	},
 

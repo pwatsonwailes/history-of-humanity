@@ -1,3 +1,5 @@
+React.initializeTouchEvents(true);
+
 var hoh = React.createClass({
 	displayName: "hoh",
 	data: false,
@@ -176,12 +178,14 @@ var hoh = React.createClass({
 	},
 
 	updateDate: function (e) {
-		var year = Math.floor(e.x);
+		if (!isNaN(e.x)) {
+			var year = Math.floor(e.x);
 
-		if (e.name === 'startDate' && year !== this.state.startDate)
-			this.updateItems('startDate', year, this.state.tag);
-		else if (e.name === 'endDate' && year !== this.state.endDate)
-			this.updateItems('endDate', year, this.state.tag);
+			if (e.name === 'startDate' && year !== this.state.startDate)
+				this.updateItems('startDate', year, this.state.tag);
+			else if (e.name === 'endDate' && year !== this.state.endDate)
+				this.updateItems('endDate', year, this.state.tag);
+		}
 	},
 
 	updatePointer: function (e) {
@@ -212,6 +216,7 @@ var hoh = React.createClass({
 			newVal = false;
 
 		this.updateItems('endDate', this.state.endDate, newVal);
+		window.tagToggler._closeMenu();
 	},
 
 	render: function () {
