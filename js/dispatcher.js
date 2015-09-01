@@ -12,6 +12,7 @@ var hoh = React.createClass({
 			show: 25,
 			tag: false,
 			selectedItems: [],
+			highlightLatLong: false,
 			itemDetail: false,
 			itemDetailActive: false,
 			wikiData: false,
@@ -103,6 +104,9 @@ var hoh = React.createClass({
 		{
 			var wikiTitle = itemData.links.main.link.replace('//en.wikipedia.org/wiki/', '');
 			this.setWikiData(wikiTitle);
+		}
+		else {
+			this.setState({ wikiData: false, wikiImages: false })
 		}
 
 		this.setState({
@@ -209,6 +213,10 @@ var hoh = React.createClass({
 			this.setState({ pointer: newPointer });
 	},
 
+	handleMarkerClick: function (e) {
+		this.setState({ highlightLatLong: e })
+	},
+
 	updateTag: function (e) {
 		var newVal = e.target.dataset.value;
 
@@ -235,6 +243,7 @@ var hoh = React.createClass({
 						mapsKey: mapsKey,
 						items: this.state.selectedItems,
 						pointer: this.state.pointer,
+						handleMarkerClick: this.handleMarkerClick,
 						show: this.state.show
 					}),
 					React.createElement(Controls, {
@@ -248,6 +257,7 @@ var hoh = React.createClass({
 				),
 				React.createElement(ItemList, {
 					items: this.state.selectedItems,
+					highlightLatLong: this.state.highlightLatLong,
 					pointer: this.state.pointer,
 					show: this.state.show,
 					itemHander: this.setItemDetail

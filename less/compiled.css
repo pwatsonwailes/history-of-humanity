@@ -18,7 +18,7 @@ Common Mixins
 Grid rules & column-widths in variables, in ems
 */
 @import url(//fonts.googleapis.com/css?family=Amiri:400italic);
-@import url(//fonts.googleapis.com/css?family=Duru+Sans);
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300);
 @import url(//fonts.googleapis.com/css?family=Crimson+Text);
 @import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css);
 .od-clear {
@@ -1606,7 +1606,7 @@ figure.col-inverse {
   box-sizing: border-box;
   background: #d12727;
   border: 2px solid #fff;
-  cursor: default!important;
+  cursor: pointer;
   height: 10px;
   width: 10px;
 }
@@ -1760,12 +1760,23 @@ body {
 #bg {
   background: #333;
   float: left;
-  height: 300px;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   z-index: -1;
+}
+#bg:after {
+  border-left: 2000px solid rgba(0, 0, 0, 0);
+  border-right: 0 solid rgba(0, 0, 0, 0);
+  border-bottom: 200px solid #F9F9F9;
+  clear: both;
+  content: '';
+  height: 0;
+  left: 0;
+  position: absolute;
+  bottom: 0;
+  width: 0;
 }
 #hohContainer {
   display: block;
@@ -1817,6 +1828,12 @@ body {
   position: relative;
   width: 50%;
 }
+#heading #logo_container p {
+  text-align: left;
+}
+#heading #logo_container p a {
+  border-bottom: none;
+}
 #heading #powered_by ul {
   text-align: right;
 }
@@ -1843,11 +1860,14 @@ body {
   color: #fff;
   clear: both;
   margin-top: 100px;
+  margin-bottom: 0;
   text-align: center;
 }
 #heading h1 #top_title {
   font-size: 32px;
-  font-family: 'Duru Sans';
+  font-family: 'Open Sans';
+  font-weight: 300;
+  letter-spacing: .25em;
   text-transform: uppercase;
 }
 #heading h1 #lower_title {
@@ -1857,18 +1877,32 @@ body {
   position: relative;
   top: -1em;
 }
+#heading p {
+  color: #fff;
+  font-family: 'Amiri';
+  font-style: italic;
+  margin-bottom: 1em;
+  text-align: center;
+}
+#heading p:last-child {
+  margin-bottom: 0;
+}
+#heading p a {
+  border-bottom: 1px dotted #fff;
+  color: #fff;
+}
 #socialButtons {
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   transition: all 0.5s;
-  color: #cb317e;
+  color: #00b5ff;
   position: absolute;
   right: 0.5em;
 }
 #socialButtons:hover,
 #socialButtons.active {
-  color: #00b5ff;
+  color: #535f5f;
 }
 #socialButtons .socialBox {
   height: 36px;
@@ -2146,7 +2180,7 @@ body {
   -moz-transition: background-color 0.5s;
   -o-transition: background-color 0.5s;
   transition: background-color 0.5s;
-  background-color: #cb317e;
+  background-color: #00b5ff;
   border: none;
   color: #fff;
   cursor: pointer;
@@ -2192,7 +2226,7 @@ body {
   left: 1px;
 }
 .fa_button:hover {
-  background-color: #00b5ff;
+  background-color: #535f5f;
   color: #fff;
 }
 #items ul {
@@ -2212,10 +2246,22 @@ body {
   background: #fff;
   cursor: pointer;
   margin-bottom: 30px;
-  padding: 1em;
+}
+#items ul .itemPanel.highlight {
+  background-color: #d5edf5;
 }
 #items ul .itemPanel p {
   margin-bottom: 0;
+  padding: 1em;
+}
+#items ul .itemPanel .readmore {
+  border-top: 1px solid #eee;
+  color: #00b5ff;
+  display: block;
+  font-size: 0.8em;
+  padding: 1em;
+  text-align: right;
+  width: 100%;
 }
 #itemDetail {
   -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.23);
@@ -2301,7 +2347,7 @@ body {
   -moz-transition: right 0.8s;
   -o-transition: right 0.8s;
   transition: right 0.8s;
-  background: #cb317e;
+  background: #00b5ff;
   color: #fff;
   cursor: pointer;
   height: 35px;
@@ -2315,6 +2361,21 @@ body {
 }
 #hideItemDetail.active {
   right: 1197px;
+}
+#footer {
+  background: #222;
+  color: #ccc;
+}
+#footer p {
+  border-top: 1px solid #fff;
+  color: #fff;
+  margin-bottom: 0;
+  padding: 2em;
+  text-align: center;
+}
+#footer a {
+  border-bottom: 1px dotted #ccc;
+  color: #ccc;
 }
 /*
 	Style overrides for IE6-8
@@ -2377,6 +2438,14 @@ body {
 @media screen and (max-width: 799px) {
   body {
     font-size: 0.85714286em;
+  }
+  #heading h1 {
+    margin-bottom: 1em;
+    margin-top: 70px;
+  }
+  #heading h1 #lower_title {
+    line-height: 0;
+    top: 0;
   }
 }
 @media screen and (min-width: 800px) {
@@ -2466,7 +2535,7 @@ body {
   }
   #hideItemDetail {
     height: 28px;
-    line-height: 1.8;
+    line-height: 1.6;
     width: 28px;
   }
   #hideItemDetail.active {
@@ -2537,7 +2606,7 @@ body {
   }
   #hideItemDetail {
     height: 28px;
-    line-height: 1.8;
+    line-height: 1.6;
     width: 28px;
   }
   #hideItemDetail.active {

@@ -27,11 +27,26 @@ var ItemList = React.createClass({
 		}
 
 		var itemThumbnail = this.renderItemThumbnail(item, key);
+		var className = 'itemPanel ';
+
+		var testPropLatLongSet = isset(this.props.highlightLatLong) && isset(this.props.highlightLatLong.lat) && isset(this.props.highlightLatLong.long);
+		var testItemLatLongSet = isset(item.latlong) && isset(item.latlong[0]) && isset(item.latlong[0][0]);
+
+		if (testPropLatLongSet && testItemLatLongSet) {
+			var latFixed = item.latlong[0][0].toFixed(1);
+			var longFixed = item.latlong[0][1].toFixed(1);
+
+			if (latFixed === this.props.highlightLatLong.lat && longFixed === this.props.highlightLatLong.long)
+				className += 'highlight';
+		}
 
 		return (
-			React.createElement("li", { key: key, 'data-year': item.year, 'data-position': item.position, className: 'itemPanel', onClick: this.props.itemHander },
+			React.createElement("li", { key: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.props.itemHander },
 				itemThumbnail,
-				React.createElement("p", null, item.text)
+				React.createElement("p", null, item.text),
+				React.createElement("div", { className: 'readmore' },
+					React.createElement("span", null, 'Read more...')
+				)
 			)
 		)
 	},
