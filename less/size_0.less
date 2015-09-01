@@ -83,13 +83,7 @@ body {
 	right: 0.5em;
 
 	&:hover,
-	&.active {
-		color: #00b5ff;
-
-		#socialIcons {
-			max-height: 500px;
-		}
-	}
+	&.active { color: #00b5ff; }
 
 	.socialBox {
 		height: 36px;
@@ -99,20 +93,19 @@ body {
 
 	#socialIcons {
 		.od-row();
-		max-height: 0;
+		bottom: 37px;
 		position: absolute;
 		right: 5px;
-		top: 37px;
 	}
 
 	#circleBg {
-		.border-radius(50%);
+		.border-radius(5px);
 		background-color: #fff;
 		display: block;
 		position: relative;
 		right: 0.9em;
 		
-		.fa-plus-circle {
+		.fa-share-alt-square {
 			left: -1px;
 			top: -4px;
 		}
@@ -123,7 +116,7 @@ body {
 		position: relative;
 	}
 
-	.fa-plus-circle { font-size: 2em; }
+	.fa-share-alt-square { font-size: 2em; }
 
 	.count,
 	.share {
@@ -132,7 +125,7 @@ body {
 	}
 
 	.count {
-		color: #525B67;
+		color: #fff;
 		font-size: 14px;
 		left: -50px;
 		position: absolute;
@@ -201,6 +194,17 @@ body {
 		text-shadow: 1px 0 0 #26427e;
 		.background-image(linear-gradient(top, #eb4924 0%, #b12403 100%));
 	}
+}
+
+.socialTransition-appear {
+  .transition(all 2s);
+  max-height: 1px;
+  opacity: 0.01;
+
+  &.socialTransition-appear-active {
+  	max-height: 500px;
+  	opacity: 1;
+  }
 }
 
 #mapAndControls,

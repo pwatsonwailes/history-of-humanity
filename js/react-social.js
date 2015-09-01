@@ -1,4 +1,5 @@
-// based on //raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 var Social = React.createClass({
 	displayName: 'Social',
 	socialSites: {
@@ -135,7 +136,7 @@ var Social = React.createClass({
 
 	renderSocialIcons: function () {
 		return (
-			React.createElement("div", { key: 'socialIcons', id: 'socialIcons' },
+			React.createElement(ReactCSSTransitionGroup, { key: 'socialIcons', id: 'socialIcons', transitionName: "socialTransition", transitionAppear: true },
 				React.createElement("div", { id: 'facebook', className: 'socialBox' },
 					React.createElement("span", { className: 'count' }, this.formatShareValue(this.state.counts.Facebook.total_count)),
 					React.createElement("span", { className: 'share', 'data-site': 'facebook', onClick: this.openWin },
@@ -177,7 +178,7 @@ var Social = React.createClass({
 		return (
 			React.createElement("div", { className: className, id: 'socialButtons', style: { top: this.state.topPosition + 'px' } },
 				React.createElement("span", { id: 'circleBg' },
-					React.createElement("i", { className: 'fa fa-plus-circle', onClick: this.toggleButtons })
+					React.createElement("i", { className: 'fa fa-share-alt-square', onClick: this.toggleButtons })
 				),
 				socialIcons
 			)

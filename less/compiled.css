@@ -1870,10 +1870,6 @@ body {
 #socialButtons.active {
   color: #00b5ff;
 }
-#socialButtons:hover #socialIcons,
-#socialButtons.active #socialIcons {
-  max-height: 500px;
-}
 #socialButtons .socialBox {
   height: 36px;
   position: relative;
@@ -1884,10 +1880,9 @@ body {
   margin: 0 auto;
   padding: 0;
   *zoom: 1;
-  max-height: 0;
+  bottom: 37px;
   position: absolute;
   right: 5px;
-  top: 37px;
 }
 #socialButtons #socialIcons:before,
 #socialButtons #socialIcons:after {
@@ -1904,18 +1899,18 @@ body {
   margin: 0;
 }
 #socialButtons #circleBg {
-  -webkit-border-radius: 50%;
+  -webkit-border-radius: 5px;
   -webkit-background-clip: padding-box;
-  -moz-border-radius: 50%;
+  -moz-border-radius: 5px;
   -moz-background-clip: padding;
-  border-radius: 50%;
+  border-radius: 5px;
   background-clip: padding-box;
   background-color: #fff;
   display: block;
   position: relative;
   right: 0.9em;
 }
-#socialButtons #circleBg .fa-plus-circle {
+#socialButtons #circleBg .fa-share-alt-square {
   left: -1px;
   top: -4px;
 }
@@ -1923,7 +1918,7 @@ body {
   cursor: pointer;
   position: relative;
 }
-#socialButtons .fa-plus-circle {
+#socialButtons .fa-share-alt-square {
   font-size: 2em;
 }
 #socialButtons .count,
@@ -1932,7 +1927,7 @@ body {
   text-decoration: none;
 }
 #socialButtons .count {
-  color: #525B67;
+  color: #fff;
   font-size: 14px;
   left: -50px;
   position: absolute;
@@ -2021,6 +2016,18 @@ body {
   background-image: -moz-linear-gradient(top, #eb4924 0%, #b12403 100%);
   background-image: -o-linear-gradient(top, #eb4924 0%, #b12403 100%);
   background-image: linear-gradient(to bottom, #eb4924 0%, #b12403 100%);
+}
+.socialTransition-appear {
+  -webkit-transition: all 2s;
+  -moz-transition: all 2s;
+  -o-transition: all 2s;
+  transition: all 2s;
+  max-height: 1px;
+  opacity: 0.01;
+}
+.socialTransition-appear.socialTransition-appear-active {
+  max-height: 500px;
+  opacity: 1;
 }
 #mapAndControls,
 #controls,
@@ -2339,7 +2346,7 @@ body {
     height: 30px;
     width: 30px;
   }
-  #circleBg .fa-plus-circle {
+  #circleBg .fa-share-alt-square {
     font-size: 2.7em;
   }
   #mapAndControls,
@@ -2395,7 +2402,7 @@ body {
     height: 30px;
     width: 30px;
   }
-  #circleBg .fa-plus-circle {
+  #circleBg .fa-share-alt-square {
     font-size: 2.7em;
   }
   #mapAndControls,
@@ -2440,7 +2447,7 @@ body {
     height: 30px;
     width: 30px;
   }
-  #circleBg .fa-plus-circle {
+  #circleBg .fa-share-alt-square {
     font-size: 2.3em;
   }
   #mapAndControls,
@@ -2478,7 +2485,7 @@ body {
     height: 30px;
     width: 30px;
   }
-  #circleBg .fa-plus-circle {
+  #circleBg .fa-share-alt-square {
     font-size: 2.3em;
   }
   #mapAndControls,
