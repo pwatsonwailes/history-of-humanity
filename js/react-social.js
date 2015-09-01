@@ -80,12 +80,12 @@ var Social = React.createClass({
 	updateDimensions: function () {
 		var dims = getViewportSize();
 
-		var topPosition = dims.width / 16 * 5;
+		var topPosition = 670;
 
-		if (topPosition < 600)
-			topPosition = 600;
-		else if (topPosition > 850)
-			topPosition = 850;
+		if (topPosition < dims.height)
+			topPosition = dims.height;
+		else if (topPosition > 1200)
+			topPosition = 1200;
 
 		topPosition -= 15;
 

@@ -107,6 +107,7 @@ var GMap = React.createClass({
 		// load initial map
 		this.map = this.createMap();
 		this.markers = [];
+		this.latlongs = [];
 
 		google.maps.event.addListener(this.map, 'center_changed', function() {
 			self.checkBounds(self.map);
@@ -156,6 +157,7 @@ var GMap = React.createClass({
 						});
 						
 						this.markers.push(marker);
+						this.latlongs.push(currentItem.latlong[j]);
 					}
 				}
 			}
@@ -198,11 +200,21 @@ var GMap = React.createClass({
 	clearMarkers: function () {
 		this.setMapOnAll(null);
 		this.markers = [];
+		this.latlongs = [];
 	},
 
 	setMapOnAll: function (map) {
+		var self = this;
+
 		for (var i = 0; i < this.markers.length; i++) {
 			this.markers[i].setMap(map);
+			google.maps.event.addListener(this.markers[i], "click", function (e) {
+				var latLong = {};
+
+				latLong.lat = this.position.G.toFixed(1);
+				latLong.long = this.position.K.toFixed(1);
+				self.props.handleMarkerClick(latLong);
+			});
 		}
 	},
 

@@ -291,17 +291,18 @@ function render () {
 
 function onWindowResize () {
 	var dims = getViewportSize();
+	console.log(dims);
 
 	var cWidth = dims.width;
-	var cHeight = cWidth / 16 * 5;
+	var cHeight = 670;
 
 	if (!mobileCheck())
 		cWidth = cWidth - 17;
 
-	if (cHeight < 600)
-		cHeight = 600;
-	else if (cHeight > 850)
-		cHeight = 850;
+	if (cHeight < dims.height)
+		cHeight = dims.height;
+	else if (cHeight > 1200)
+		cHeight = 1200;
 
 	camera.aspect = cWidth / cHeight;
 	camera.updateProjectionMatrix();
