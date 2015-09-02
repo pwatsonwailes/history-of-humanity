@@ -240,8 +240,14 @@ function init () {
 	scene.add(light);
   
 	smokeTexture = THREE.ImageUtils.loadTexture('./imgs/Smoke-Element.png');
-	smokeMaterial = new THREE.MeshLambertMaterial({color: 0x93887d, map: smokeTexture, transparent: true});
-	smokeGeo = new THREE.PlaneGeometry(300,300);
+	smokeMaterial = new THREE.MeshLambertMaterial({
+		color: 0x93887d,
+		map: smokeTexture,
+		transparent: true
+	});
+	smokeMaterial.map.minFilter = THREE.LinearFilter;
+	
+	smokeGeo = new THREE.PlaneBufferGeometry(300,300);
 	smokeParticles = [];
 
 	for (p = 0; p < 200; p++) {
@@ -263,6 +269,7 @@ function animate () {
 	requestAnimationFrame( animate );
 	evolveSmoke();
 	render();
+	onWindowResize();
 }
 
 function evolveSmoke () {
@@ -286,12 +293,10 @@ function render () {
 	mesh.position.z = 100 + (Math.sin(cubeSineDriver) * 500);
 	updateLightPosition();
 	renderer.render( scene, camera );
-	onWindowResize();
 }
 
 function onWindowResize () {
 	var dims = getViewportSize();
-	console.log(dims);
 
 	var cWidth = dims.width;
 	var cHeight = 670;
@@ -304,7 +309,7 @@ function onWindowResize () {
 	else if (cHeight > 1200)
 		cHeight = 1200;
 
-	camera.aspect = cWidth / cHeight;
+	camera.aspect = dims.width / dims.height;
 	camera.updateProjectionMatrix();
 
 	renderer.setSize(cWidth, cHeight);

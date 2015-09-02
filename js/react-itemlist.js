@@ -45,7 +45,7 @@ var ItemList = React.createClass({
 				itemThumbnail,
 				React.createElement("p", null, item.text),
 				React.createElement("div", { className: 'readmore' },
-					React.createElement("span", null, 'Read more...')
+					React.createElement("span", { 'data-year': item.year, 'data-position': item.position }, 'Read more...')
 				)
 			)
 		)
