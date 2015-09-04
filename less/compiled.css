@@ -17,8 +17,8 @@ Common Mixins
 /*
 Grid rules & column-widths in variables, in ems
 */
+@import url(//fonts.googleapis.com/css?family=Raleway:400,200);
 @import url(//fonts.googleapis.com/css?family=Amiri:400italic);
-@import url(//fonts.googleapis.com/css?family=Open+Sans:300);
 @import url(//fonts.googleapis.com/css?family=Crimson+Text);
 @import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css);
 .od-clear {
@@ -1864,9 +1864,9 @@ body {
 }
 #heading h1 #top_title {
   font-size: 32px;
-  font-family: 'Open Sans';
-  font-weight: 300;
-  letter-spacing: .25em;
+  font-family: Raleway;
+  font-weight: 200;
+  letter-spacing: .2em;
   text-transform: uppercase;
 }
 #heading h1 #lower_title {
