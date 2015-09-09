@@ -1,4 +1,8 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+function isset (obj) { return typeof obj !== 'undefined'; }
+
+var React = require('react/addons'),
+	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
+	axios = require('axios');
 
 var Social = React.createClass({
 	displayName: 'Social',
@@ -45,12 +49,9 @@ var Social = React.createClass({
 
 	getInitialState: function () {
 		return {
-			active: false
+			active: false,
+			topPosition: 0
 		}
-	},
-
-	componentWillMount: function() {
-		this.updateDimensions();
 	},
 
 	componentDidMount: function() {
@@ -58,13 +59,12 @@ var Social = React.createClass({
 		var reqUrl = 'https://zorg.builtvisible.com/tools/scrs/json';
 		var api_key = '65b608cf38b638ea71cf4c9baad182ae';
 
-		qwest.get(reqUrl + '?api_key=' + api_key + '&url=' + window.location.href, null, { timeout: 5000, attempts: 2, responseType: 'json' })
-		.then(function(response) {
-			self.updateCounts(response);
-		})
-		.catch(function(e, response) {
-			console.log(e);
+		axios.get(reqUrl + '?api_key=' + api_key + '&url=' + window.location.href)
+		.then(function (res) {
+			self.updateCounts(res.data);
 		});
+
+		this.updateDimensions();
 
 		window.addEventListener("resize", this.updateDimensions);
 	},
@@ -78,16 +78,18 @@ var Social = React.createClass({
 	},
 
 	updateDimensions: function () {
-		var dims = getViewportSize();
+		if (typeof window !== 'undefined') {
+			var dims = getViewportSize();
 
-		var topPosition = 600;
+			var topPosition = 600;
 
-		if (topPosition > dims.height)
-			topPosition = dims.height;
+			if (topPosition > dims.height)
+				topPosition = dims.height;
 
-		topPosition -= 15;
+			topPosition -= 15;
 
-		this.setState({ topPosition: topPosition });
+			this.setState({ topPosition: topPosition });
+		}
 	},
 
 	updateCounts: function (data) {
@@ -183,3 +185,5 @@ var Social = React.createClass({
 		)
 	}
 });
+
+module.exports = Social;

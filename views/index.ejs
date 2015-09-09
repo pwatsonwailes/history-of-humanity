@@ -13,11 +13,6 @@
 	<meta name="msapplication-TileImage" content="/wp-content/themes/gadg3t/images/logo_icon_blue_32x32.png">
 	<link rel="publisher" href="https://plus.google.com/+SEOgadget">
 
-	<script type="text/javascript">
-		var gtm4wp_datalayer_name = "dataLayer";
-		var dataLayer = dataLayer || []
-	</script>
-
 	<title>History of Modern Humanity | Builtvisible</title>
 
 	<meta name="robots" content="noodp"/>
@@ -39,14 +34,12 @@
 	<meta name="twitter:image:src" content="https://builtvisible.com/wp-content/uploads/2015/08/cover-social.png"/>
 	<meta name="twitter:creator" content="@petewailes"/>
 
-	<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react-with-addons.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/history.js/1.8/native.history.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
 	<script src="//maps.googleapis.com/maps/api/js"></script>
+	<script src="/markerwithlabel.js"></script>
 
-	<script src="js/functions.js"></script>
-	<script src="js/markerwithlabel.js"></script>
-
-	<link href="less/compiled.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="/compiled.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div id="bg"></div>
@@ -55,38 +48,31 @@
 			<div id="logo_container">
 				<p>
 					<a href="/">
-						<img src="imgs/logo.png" alt="Home">
+						<img src="/imgs/logo.png" alt="Home">
 					</a>
 				</p>
 			</div>
 			<div id="powered_by">
 				<ul class="unstyled inline">
-					<li id="reactjs"><a href="http://facebook.github.io/react/"><img src="imgs/react-logo.svg" alt="React.js logo"> React</a></li>
+					<li id="reactjs"><a href="http://facebook.github.io/react/"><img src="/imgs/react-logo.svg" alt="React.js logo"> React</a></li>
 					<li id="wikipedia"><a href="https://www.wikipedia.org/">W<small>ikipedi</small>a</a></li>
 				</ul>
 			</div>
 		</header>
 		<h1><span id="top_title">A History of Modern Humanity</span><br><span id="lower_title">The Post-Industrial Revolution World</span></h1>
-		<p>A demo app to display a list of important events in Human history based on Wikipedia data. Uses Three.js, Qwest and React.js</p>
+		<p>A demo app to display a list of important events in Human history based on Wikipedia data. Uses Three.js, httpplease and React.js</p>
 		<p>Select a date range below, or read <a href="//builtvisible.com/building-content-in-react/">how this was built</a></p>
 	</div>
-	<div id="hoh"></div>
+	<div id="hoh"><%- reactOutput %></div>
 	<footer id="footer">
 		<p>A <a href="/services/web-development/">web development</a> project by <a href="/">builtvisible</a></p>
 	</footer>
 
-	<script src="js/react-social.js"></script>
-	<script src="js/react-controls.js"></script>
-	<script src="js/react-gmaps.js"></script>
-	<script src="js/react-itemlist.js"></script>
-	<script src="js/react-itemdetail.js"></script>
-	<script src="js/dispatcher.js"></script>
+	<script src="/functions.js"></script>
+	<script src="/bundle.min.js"></script>
 	<script>
 	init();
 	animate();
 	</script>
-
-	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WWVLMM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-WWVLMM');</script>
 </body>
 </html>

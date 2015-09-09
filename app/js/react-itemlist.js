@@ -1,13 +1,44 @@
+function isset (obj) { return typeof obj !== 'undefined'; }
+
+var React = require('react/addons');
+
 var ItemList = React.createClass({
 	displayName: "ItemList",
+	jumping: false,
 
-	componentDidMount: function(props) {},
+	getInitialState: function () { return { jumpTo: false } },
 
-	componentDidUpdate: function () {},
-
-	renderYear: function (x, y, year) {
-		return React.createElement("li", { key: 'year' + x + y + year, className: 'yearTitle' }, year)
+	componentWillReceiveProps: function (nextProps) {
+		if (this.props.highlightLatLong === false && nextProps.highlightLatLong !== false || this.props.highlightLatLong.lat !== nextProps.highlightLatLong.lat)
+			this.setState({ jumpTo: false });
 	},
+
+	//gist.github.com/dezinezync/5487119
+	scrollAnimate: function (Y, duration) {
+		var start = Date.now(),
+			elem = document.documentElement.scrollTop ? document.documentElement : document.body,
+			from = elem.scrollTop;
+
+		if (from === Y)
+			return; // Prevent scrolling to the Y point if already there
+
+		function min (a,b) { return a < b ? a : b; }
+
+		function scroll(timestamp) {
+			var currentTime = Date.now(),
+				t = min(1, ((currentTime - start) / duration)),
+				easedT = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+			elem.scrollTop = (easedT * (Y - from)) + from;
+
+			if (t < 1)
+				requestAnimationFrame(scroll);
+		}
+
+		requestAnimationFrame(scroll)
+	},
+
+	renderYear: function (x, y, year) { return React.createElement("li", { key: 'year' + x + y + year, className: 'yearTitle' }, year) },
 
 	renderItemThumbnail: function (item, key) {
 		var picKey = 'thumb' + key;
@@ -27,7 +58,7 @@ var ItemList = React.createClass({
 		}
 
 		var itemThumbnail = this.renderItemThumbnail(item, key);
-		var className = 'itemPanel ';
+		var className = 'itemPanel';
 
 		var testPropLatLongSet = isset(this.props.highlightLatLong) && isset(this.props.highlightLatLong.lat) && isset(this.props.highlightLatLong.long);
 		var testItemLatLongSet = isset(item.latlong) && isset(item.latlong[0]) && isset(item.latlong[0][0]);
@@ -36,12 +67,21 @@ var ItemList = React.createClass({
 			var latFixed = item.latlong[0][0].toFixed(1);
 			var longFixed = item.latlong[0][1].toFixed(1);
 
-			if (latFixed === this.props.highlightLatLong.lat && longFixed === this.props.highlightLatLong.long)
-				className += 'highlight';
+			if (latFixed === this.props.highlightLatLong.lat && longFixed === this.props.highlightLatLong.long) {
+				className += ' highlightMap';
+
+				if (this.state.jumpTo === false && this.jumping === false) {
+					this.jumping = true;
+					this.scrollAnimate($(key).offsetTop, 1000);
+				}
+			}
 		}
 
+		if (parseInt(this.state.jumpTo) === parseInt(key))
+			className += ' highlightClick';
+
 		return (
-			React.createElement("li", { key: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.props.itemHander },
+			React.createElement("li", { key: key, id: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.itemHandler },
 				itemThumbnail,
 				React.createElement("p", null, item.text),
 				React.createElement("div", { className: 'readmore' },
@@ -49,6 +89,22 @@ var ItemList = React.createClass({
 				)
 			)
 		)
+	},
+
+	itemHandler: function (e) {
+		if (isset(e.target.id) && e.target.id !== '')
+			var newJumpTo = e.target.id;
+		else if (isset(e.target.parentNode.id) && e.target.parentNode.id !== '')
+			var newJumpTo = e.target.parentNode.id;
+		else if (isset(e.target.parentNode.parentNode.id) && e.target.parentNode.parentNode.id !== '')
+			var newJumpTo = e.target.parentNode.parentNode.id;
+
+		if (this.state.jumpTo === false || parseInt(this.state.jumpTo) !== parseInt(newJumpTo)) {
+			this.scrollAnimate($(newJumpTo).offsetTop, 1000);
+			this.setState({ jumpTo: newJumpTo });
+		}
+
+		this.props.itemHandler(e);
 	},
 
 	renderItems: function (item) {
@@ -73,6 +129,7 @@ var ItemList = React.createClass({
 				}
 			}
 		}
+		this.jumping = false;
 
 		return relevantItems;
 	},
@@ -102,3 +159,5 @@ var ItemList = React.createClass({
 		)
 	}
 });
+
+module.exports = ItemList;

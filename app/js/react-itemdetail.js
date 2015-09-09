@@ -1,23 +1,16 @@
+function isset (obj) { return typeof obj !== 'undefined'; }
+
+var React = require('react/addons'),
+	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 var ItemDetail = React.createClass({
 	displayName: "ItemDetail",
 
-	getInitialState: function (props) {
-		return {
-			galleryPointer: 0
-		}
-	},
+	getInitialState: function () { return { galleryPointer: 0 } },
 
-	componentDidMount: function(props) {},
+	componentWillReceiveProps: function () { this.setState({ galleryPointer: 0 }); },
 
-	componentWillReceiveProps: function () {
-		this.setState({
-			galleryPointer: 0
-		});
-	},
-
-	componentDidUpdate: function () {},
-
-	renderRelatedLinks: function (link) {
+	renderRelatedLink: function (link) {
 		return (
 			React.createElement("li", { key: 'relatedLink' + link.link },
 				React.createElement("a", { href: link.link, target: '_blank' }, link.title)
@@ -27,6 +20,14 @@ var ItemDetail = React.createClass({
 
 	noRelatedLinks: function () {
 		return React.createElement("li", { key: 'relatedLink' }, 'No related links')
+	},
+
+	renderItemLocation: function (location) {
+		return React.createElement("li", { key: 'loc' + location }, location)
+	},
+
+	noLocations: function () {
+		return React.createElement("li", { key: 'locations' }, 'No locations to show')
 	},
 
 	noImages: function () {
@@ -80,17 +81,21 @@ var ItemDetail = React.createClass({
 	},
 
 	render: function () {
-		var className = (this.props.active) ? 'active' : '';
-		var windowDims = getViewportSize();
+		if (typeof window !== 'undefined')
+			var windowDims = getViewportSize();
 
 		if (this.props.itemDetail !== false) {
 			if (isset(this.props.itemDetail.links.related))
-				var itemLinks = this.props.itemDetail.links.related.map(this.renderRelatedLinks)
+				var itemLinks = this.props.itemDetail.links.related.map(this.renderRelatedLink);
 			else
 				var itemLinks = this.noRelatedLinks();
 
-			var mainLink = this.renderMainLink();
+			if (isset(this.props.itemDetail.locations[0]))
+				var itemLocations = this.props.itemDetail.locations.map(this.renderItemLocation);
+			else
+				var itemLocations = this.noLocations();
 
+			var mainLink = this.renderMainLink();
 
 			if (this.props.wikiImages !== false && this.props.wikiImages.length > 0) {
 				var gallery = [];
@@ -114,11 +119,15 @@ var ItemDetail = React.createClass({
 			var controls = (gallery.length > 0) ? this.renderControls() : [];
 
 			return (
-				React.createElement("div", { id: "itemDetail", className: className, style: { maxHeight: windowDims.height - 20 } },
+				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 0 } },
 					React.createElement("h3", null, this.props.itemDetail.text),
 					React.createElement("div", null,
 						extract,
 						mainLink
+					),
+					React.createElement("h4", null, 'Locations'),
+					React.createElement("ul", null,
+						itemLocations
 					),
 					React.createElement("h4", null, 'Related Links'),
 					React.createElement("ul", null,
@@ -132,8 +141,7 @@ var ItemDetail = React.createClass({
 				)
 			)
 		}
-		else {
-			return React.createElement("div", { id: "itemDetail", style: { maxHeight: 0 } })
-		}
 	}
 });
+
+module.exports = ItemDetail;

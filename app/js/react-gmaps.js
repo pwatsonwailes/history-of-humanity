@@ -1,3 +1,7 @@
+function isset (obj) { return typeof obj !== 'undefined'; }
+
+var React = require('react/addons');
+
 var GMap = React.createClass({
 	displayName: "GMap",
 
@@ -99,15 +103,14 @@ var GMap = React.createClass({
 	}],
 
 	componentWillMount: function() {
-		this.updateDimensions();
+		// load initial map
+		this.markers = [];
+		this.latlongs = [];
 	},
 
 	componentDidMount: function(props) {
 		var self = this;
-		// load initial map
 		this.map = this.createMap();
-		this.markers = [];
-		this.latlongs = [];
 
 		google.maps.event.addListener(this.map, 'center_changed', function() {
 			self.checkBounds(self.map);
@@ -119,7 +122,11 @@ var GMap = React.createClass({
 			self.map.setCenter(center);
 		});
 
+		this.updateDimensions();
 		window.addEventListener("resize", this.updateDimensions);
+
+		if (this.props.items.length > 0)
+			this.createMarkers();
 	},
 
 	componentWillUnmount: function() {
@@ -127,80 +134,81 @@ var GMap = React.createClass({
 	},
 
 	shouldComponentUpdate: function (newProps, newState) {
-		return newProps.mapsKey !== this.props.mapsKey || newState.width !== this.state.width;
+		return newProps.mapsKey !== this.props.mapsKey || (this.state !== null && isset(this.state.width) && isset(newState.width) && newState.width !== this.state.width);
 	},
 
 	componentDidUpdate: function () {
 		this.clearMarkers();
-
-		if (this.props.items.length > 0)
-		{
-			var x = this.props.pointer * this.props.show;
-			var y = this.props.pointer * this.props.show + this.props.show;
-			var year = this.props.items[x].year;
-
-			for (var i = x; i < y; i++) {
-				var currentItem = this.props.items[i];
-
-				if (isset(currentItem.latlong) && currentItem.latlong.length > 0)
-				{
-					for (var j = currentItem.latlong.length - 1; j >= 0; j--) {
-						var marker = new MarkerWithLabel({
-							icon: {
-								path: google.maps.SymbolPath.CIRCLE,
-								scale: 0,
-							},
-							labelAnchor: new google.maps.Point(10, 10),
-							labelClass: "label",
-							position: new google.maps.LatLng(currentItem.latlong[j][0], currentItem.latlong[j][1]),
-							map: this.map
-						});
-						
-						this.markers.push(marker);
-						this.latlongs.push(currentItem.latlong[j]);
-					}
-				}
-			}
-
-			this.setMapOnAll(this.map);
-		}
+		this.createMarkers();
 	},
 
 	updateDimensions: function (returnStyles) {
-		var dims = getViewportSize();
+		if (typeof window !== 'undefined') {
+			var dims = getViewportSize();
 
-		var styles = {
-			height: '600px',
-			width: '1300px'
-		}
+			var styles = {
+				height: '600px',
+				width: '1300px'
+			}
 
-		if (dims.width < 640) {
-			styles.height = '250px';
-			styles.width = '285px';
-		}
-		else if (dims.width > 640 && dims.width < 800) {
-			styles.height = '325px';
-			styles.width = '425px';
-		}
-		else if (dims.width > 800 && dims.width < 1024) {
-			styles.height = '455px';
-			styles.width = '625px';
-		}
-		else if (dims.width > 1024 && dims.width < 1376) {
-			styles.width = '900px';
-		}
-		else if (dims.width > 1376 && dims.width < 1840) {
-			styles.width = '1200px';
-		}
+			if (dims.width < 640) {
+				styles.height = '250px';
+				styles.width = '285px';
+			}
+			else if (dims.width > 640 && dims.width < 800) {
+				styles.height = '325px';
+				styles.width = '425px';
+			}
+			else if (dims.width > 800 && dims.width < 1024) {
+				styles.height = '455px';
+				styles.width = '625px';
+			}
+			else if (dims.width > 1024 && dims.width < 1376) {
+				styles.width = '900px';
+			}
+			else if (dims.width > 1376 && dims.width < 1840) {
+				styles.width = '1200px';
+			}
 
-		this.setState(styles);
+			this.setState(styles);
+		}
 	},
-
 
 	clearMarkers: function () {
 		this.setMapOnAll(null);
 		this.markers = [];
 		this.latlongs = [];
+	},
+
+	createMarkers: function () {
+		var x = this.props.pointer * this.props.show;
+		var y = this.props.pointer * this.props.show + this.props.show;
+		var year = this.props.items[x].year;
+
+		for (var i = x; i < y; i++) {
+			var currentItem = this.props.items[i];
+
+			if (isset(currentItem.latlong) && currentItem.latlong.length > 0)
+			{
+				for (var j = currentItem.latlong.length - 1; j >= 0; j--) {
+					var marker = new MarkerWithLabel({
+						icon: {
+							path: google.maps.SymbolPath.CIRCLE,
+							scale: 0,
+						},
+						labelAnchor: new google.maps.Point(10, 10),
+						labelClass: "label",
+						position: new google.maps.LatLng(currentItem.latlong[j][0], currentItem.latlong[j][1]),
+						map: this.map
+					});
+					
+					this.markers.push(marker);
+					this.latlongs.push(currentItem.latlong[j]);
+				}
+			}
+		}
+
+		this.setMapOnAll(this.map);
 	},
 
 	setMapOnAll: function (map) {
@@ -279,3 +287,5 @@ var GMap = React.createClass({
 		)
 	}
 });
+
+module.exports = GMap;
