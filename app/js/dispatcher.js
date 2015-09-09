@@ -137,8 +137,8 @@ var HoH = React.createClass({
 	},
 
 	setWikiData: function (wikiTitle) {
+		var self = this;
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + wikiTitle;
-
 		var wikidata = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&")))
 
 		wikidata.then(function (res) {
@@ -169,7 +169,7 @@ var HoH = React.createClass({
 								if (isset(imgRes.data.query.pages['-1']) && isset(imgRes.data.query.pages['-1'].imageinfo))
 									newState.wikiImages.push(imgRes.data.query.pages['-1'].imageinfo[0].url);
 
-								return newState;
+								self.setState(newState);
 							})
 							.catch(function (e) {
 								console.log('error in xhr 2');
@@ -189,7 +189,7 @@ var HoH = React.createClass({
 					}
 				}
 				else
-					return newState;
+					self.setState(newState);
 			}
 		})
 		.catch(function (e) {
