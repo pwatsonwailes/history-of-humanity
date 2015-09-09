@@ -90,7 +90,6 @@ var HoH = React.createClass({
 
 	historyUpdate: function () {
 		var parts = window.location.pathname.split('/');
-		console.log(parts);
 
     if (isset(parts[1]) && parts[1] !== '') {
 			this.setItemDetail({"target": {"dataset": { "year": parts[1], "position": parts[2] }}}, false);
@@ -138,7 +137,6 @@ var HoH = React.createClass({
 	},
 
 	setWikiData: function (wikiTitle) {
-		var self = this;
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + wikiTitle;
 
 		var wikidata = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&")))
@@ -171,7 +169,7 @@ var HoH = React.createClass({
 								if (isset(imgRes.data.query.pages['-1']) && isset(imgRes.data.query.pages['-1'].imageinfo))
 									newState.wikiImages.push(imgRes.data.query.pages['-1'].imageinfo[0].url);
 
-								self.setState(newState);
+								return newState;
 							})
 							.catch(function (e) {
 								console.log('error in xhr 2');
@@ -191,7 +189,7 @@ var HoH = React.createClass({
 					}
 				}
 				else
-					self.setState(newState);
+					return newState;
 			}
 		})
 		.catch(function (e) {
@@ -255,9 +253,9 @@ var HoH = React.createClass({
 					React.createElement("i", { className: 'fa fa-times' })
 				),
 				React.createElement(ItemDetail, {
-					itemDetail: this.state.itemDetail,
-					wikiData: this.state.wikiData,
-					wikiImages: this.state.wikiImages
+					itemDetail: (isset(this.props.initwikidata)) ? this.props.initwikidata.itemDetail : this.state.itemDetail,
+					wikiData: (isset(this.props.initwikidata)) ? this.props.initwikidata.wikiData : this.state.wikiData,
+					wikiImages: (isset(this.props.initwikidata)) ? this.props.initwikidata.wikiImages : this.state.wikiImages
 				})
 			)
 		)
@@ -266,7 +264,7 @@ var HoH = React.createClass({
 	render: function () {
 		var highchartKey = this.state.startDate.toString() + this.state.endDate.toString();
 		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
-		var itemDetail = (this.state.itemDetail !== false) ? this.renderItemDetail() : [];
+		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata)) ? this.renderItemDetail() : [];
 
 		return (
 			React.createElement("div", { id: "hohContainer", onClick: this.hideItemDetail },

@@ -19,10 +19,10 @@ window.app = (function() {
 
   if (window.location.pathname !== '/') {
     var parts = window.location.pathname.split('/');
-    console.log(parts);
-
     var initData = { year: parts[1], position: parts[2], name: parts[3] }
   }
+  else
+    var initData = { year: false, position: false, name: false }
 
   return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: initData }), document.getElementById('hoh'));
 })();
