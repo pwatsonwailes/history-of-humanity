@@ -2256,6 +2256,9 @@ body {
   margin-bottom: 0;
   padding: 1em;
 }
+#items ul .itemPanel p a {
+  color: #727272;
+}
 #items ul .itemPanel .readmore {
   border-top: 1px solid #eee;
   color: #00b5ff;

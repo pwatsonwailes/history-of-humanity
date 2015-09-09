@@ -36,7 +36,7 @@ var HoH = React.createClass({
 	componentDidMount: function () {
 		var self = this;
 
-		if (isset(this.props.initparams))
+		if (isset(this.props.initparams) && this.props.initparams.year !== false)
 			this.setItemDetail({"target": {"dataset": { "year": this.props.initparams.year, position: this.props.initparams.position }}});
 	
 		History.Adapter.bind(window, 'statechange', function() {
@@ -91,7 +91,7 @@ var HoH = React.createClass({
 	historyUpdate: function () {
 		var parts = window.location.pathname.split('/');
 
-    if (isset(parts[1]) && parts[1] !== '') {
+    if (isset(parts[1]) && parts[1] !== '' && parts[1] !== false) {
 			this.setItemDetail({"target": {"dataset": { "year": parts[1], "position": parts[2] }}}, false);
     }
     else {
@@ -100,15 +100,22 @@ var HoH = React.createClass({
 	},
 
 	setItemDetail: function (e, updateHistory) {
+		if (typeof e.preventDefault === 'function')
+			e.preventDefault();
+
 		if (isset(e.target.dataset.year))
 			var year = e.target.dataset.year;
 		else if (isset(e.target.parentNode.dataset.year))
 			var year = e.target.parentNode.dataset.year;
+		else if (isset(e.target.parentNode.parentNode.dataset.year))
+			var year = e.target.parentNode.parentNode.dataset.year;
 
 		if (isset(e.target.dataset.position))
 			var position = e.target.dataset.position;
 		else if (isset(e.target.parentNode.dataset.position))
 			var position = e.target.parentNode.dataset.position;
+		else if (isset(e.target.parentNode.parentNode.dataset.position))
+			var position = e.target.parentNode.parentNode.dataset.position;
 
 		var itemData = this.props.timeline[year][position];
 
