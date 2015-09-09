@@ -1,0 +1,32 @@
+{
+  "name": "history-of-humanity",
+  "version": "0.1.0",
+  "description": "A wikipedia powered React.JS demo application",
+  "main": "server.js",
+  "scripts": {
+    "build-dev": "browserify -e app/main.js -o public/bundle.dev.js -d",
+    "build-min": "browserify -e app/main.js -g uglifyify -o public/bundle.min.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Builtvisible/history-of-humanity.git"
+  },
+  "author": "petewailes",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/Builtvisible/history-of-humanity/issues"
+  },
+  "homepage": "https://github.com/Builtvisible/history-of-humanity",
+  "devDependencies": {
+    "browserify": "11.x",
+    "uglifyify": "3.0.x"
+  },
+  "dependencies": {
+    "axios": "^0.5.4",
+    "body-parser": "^1.13.3",
+    "ejs": "^2.3.3",
+    "express": "^4.13.3",
+    "react": "^0.13.3"
+  }
+}

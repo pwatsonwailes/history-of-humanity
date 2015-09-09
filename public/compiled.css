@@ -534,7 +534,7 @@ blockquote,
 cite,
 q {
   font-style: italic
-	quotes: none;
+  quotes: none;
 }
 blockquote:before,
 blockquote:after,
@@ -2246,8 +2246,11 @@ body {
   cursor: pointer;
   margin-bottom: 30px;
 }
-#items ul .itemPanel.highlight {
+#items ul .itemPanel.highlightMap {
   background-color: #d5edf5;
+}
+#items ul .itemPanel.highlightClick {
+  background-color: #f5f4d5;
 }
 #items ul .itemPanel p {
   margin-bottom: 0;
@@ -2262,23 +2265,26 @@ body {
   text-align: right;
   width: 100%;
 }
+.itemDetailTransition-appear {
+  opacity: 0.01;
+  -webkit-transition: opacity 0.5s ease-in;
+  -moz-transition: opacity 0.5s ease-in;
+  -o-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+}
+.itemDetailTransition-appear.itemDetailTransition-appear-active {
+  opacity: 1;
+}
 #itemDetail {
   -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.23);
   -moz-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.23);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.23);
-  -webkit-transition: right 0.8s;
-  -moz-transition: right 0.8s;
-  -o-transition: right 0.8s;
-  transition: right 0.8s;
   background: #fff;
   overflow-y: auto;
   padding: 1em;
   position: fixed;
-  right: -100%;
-  top: 10px;
-}
-#itemDetail.active {
   right: 15px;
+  top: 10px;
 }
 #itemDetail h3,
 #itemDetail h4 {
@@ -2342,24 +2348,17 @@ body {
   -webkit-box-shadow: 1px 1px 1px #cccccc;
   -moz-box-shadow: 1px 1px 1px #cccccc;
   box-shadow: 1px 1px 1px #cccccc;
-  -webkit-transition: right 0.8s;
-  -moz-transition: right 0.8s;
-  -o-transition: right 0.8s;
-  transition: right 0.8s;
   background: #00b5ff;
   color: #fff;
   cursor: pointer;
   height: 35px;
   line-height: 2;
   position: fixed;
-  right: -100%;
+  right: 1297px;
   text-align: center;
   top: 4px;
   width: 35px;
   z-index: 200;
-}
-#hideItemDetail.active {
-  right: 1197px;
 }
 #footer {
   background: #222;
@@ -2377,11 +2376,11 @@ body {
   color: #ccc;
 }
 /*
-	Style overrides for IE6-8
-	http://jonikorpi.com/leaving-old-IE-behind/
+  Style overrides for IE6-8
+  http://jonikorpi.com/leaving-old-IE-behind/
 */
 /*
-	Small
+  Small
 */
 @media screen and (max-width: 639px) {
   input[type="submit"],
@@ -2492,7 +2491,7 @@ body {
   }
 }
 /*
-	Mid
+  Mid
 */
 @media screen and (min-width: 1376px) {
   body {
@@ -2575,7 +2574,7 @@ body {
   }
 }
 /*
-	Large
+  Large
 */
 @media screen and (min-width: 1376px) and (max-width: 1839px) {
   #hohContainer,
