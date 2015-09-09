@@ -46,7 +46,7 @@ var Controls = React.createClass({
 	setTag: function (tag) {
 		return (
 			React.createElement("li", { key: tag.value },
-				React.createElement("a", { 'data-value': tag.value, onClick: this.props.tagHandler }, tag.title)
+				React.createElement("span", { 'data-value': tag.value, onClick: this.props.tagHandler }, tag.title)
 			)
 		)
 	},
