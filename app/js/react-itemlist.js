@@ -86,7 +86,7 @@ var ItemList = React.createClass({
 			React.createElement("li", { key: key, id: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.itemHandler },
 				itemThumbnail,
 				React.createElement("p", null,
-					React.createElement("a", { href: '/' + item.year + '/' + item.position + '/' + title }, item.text)
+					React.createElement("a", { href: '/history-of-humanity/' + item.year + '/' + item.position + '/' + title }, item.text)
 				),
 				React.createElement("div", { className: 'readmore' },
 					React.createElement("span", { 'data-year': item.year, 'data-position': item.position }, 'Read more...')
