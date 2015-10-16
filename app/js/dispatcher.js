@@ -89,7 +89,7 @@ var HoH = React.createClass({
 	},
 
 	historyUpdate: function () {
-		var parts = window.location.pathname.split('/');
+		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
     if (isset(parts[1]) && parts[1] !== '' && parts[1] !== false) {
 			this.setItemDetail({"target": {"dataset": { "year": parts[1], "position": parts[2] }}}, false);
@@ -131,7 +131,7 @@ var HoH = React.createClass({
 		this.setState({ itemDetail: itemData });
 
 		if (!isset(updateHistory) || updateHistory !== false)
-			History.pushState(null, itemData.text + ' | History of Modern Humanity | Builtvisible', '/' + year + '/' + position + '/' + wikiTitle);
+			History.pushState(null, itemData.text + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/' + year + '/' + position + '/' + wikiTitle);
 	},
 
 	hideItemDetail: function (e, updateHistory) {
@@ -139,7 +139,7 @@ var HoH = React.createClass({
 			this.setState({ itemDetail: false });
 
 			if (!isset(updateHistory) || updateHistory !== false)
-				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/');
+				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
 		}
 	},
 
