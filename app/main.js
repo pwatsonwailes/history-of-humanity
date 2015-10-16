@@ -18,7 +18,7 @@ window.app = (function() {
   };
 
   if (window.location.pathname !== '/') {
-    var parts = window.location.pathname.split('/');
+    var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
     var initData = { year: parts[1], position: parts[2], name: parts[3] }
   }
   else
