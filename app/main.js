@@ -19,7 +19,7 @@ window.app = (function() {
 
   if (window.location.pathname !== '/') {
     var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
-    var initData = { year: parts[1], position: parts[2], name: parts[3] }
+    var initData = { year: parts[0], position: parts[1], name: parts[2] }
   }
   else
     var initData = { year: false, position: false, name: false }
