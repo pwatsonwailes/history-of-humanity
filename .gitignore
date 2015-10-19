@@ -5,4 +5,4 @@ Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
 
-node-modules/
+node_modules/
