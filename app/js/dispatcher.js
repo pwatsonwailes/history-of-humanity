@@ -92,7 +92,7 @@ var HoH = React.createClass({
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
     if (isset(parts[1]) && parts[1] !== '' && parts[1] !== false) {
-			this.setItemDetail({"target": {"dataset": { "year": parts[1], "position": parts[2] }}}, false);
+			this.setItemDetail({"target": {"dataset": { "year": parts[0], "position": parts[1] }}}, false);
     }
     else {
     	this.hideItemDetail({"target": {"id": "hohContainer"}}, false);
