@@ -110,23 +110,26 @@ var GMap = React.createClass({
 
 	componentDidMount: function(props) {
 		var self = this;
-		this.map = this.createMap();
 
-		google.maps.event.addListener(this.map, 'center_changed', function() {
-			self.checkBounds(self.map);
-		});
+		if (typeof google === 'object') {
+			this.map = this.createMap();
 
-		google.maps.event.addDomListener(window, "resize", function() {
-			var center = self.map.getCenter();
-			google.maps.event.trigger(self.map, "resize");
-			self.map.setCenter(center);
-		});
+			google.maps.event.addListener(this.map, 'center_changed', function() {
+				self.checkBounds(self.map);
+			});
+
+			google.maps.event.addDomListener(window, "resize", function() {
+				var center = self.map.getCenter();
+				google.maps.event.trigger(self.map, "resize");
+				self.map.setCenter(center);
+			});
+
+			if (this.props.items.length > 0)
+				this.createMarkers();
+		}
 
 		this.updateDimensions();
 		window.addEventListener("resize", this.updateDimensions);
-
-		if (this.props.items.length > 0)
-			this.createMarkers();
 	},
 
 	componentWillUnmount: function() {
@@ -138,8 +141,10 @@ var GMap = React.createClass({
 	},
 
 	componentDidUpdate: function () {
-		this.clearMarkers();
-		this.createMarkers();
+		if (typeof google === 'object') {
+			this.clearMarkers();
+			this.createMarkers();
+		}
 	},
 
 	updateDimensions: function (returnStyles) {
