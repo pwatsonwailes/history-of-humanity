@@ -35,20 +35,18 @@ var Controls = React.createClass({
 		{ value: 'ww2', title: 'WW2' }
 	],
 
-	componentDidMount: function(props) {
-		window.tagToggler = new toggleMode(
-			$('tagHandler'),
-			$('tags'),
-			{ activeTargetClass: 'active' }
-		);
+	getInitialState: function () { return { showTags: false } },
+
+	toggleTags: function () { this.setState({ showTags: !this.state.showTags }) },
+	hideTags: function () { this.setState({ showTags: false }) },
+
+	tagHandler: function (e) {
+		this.hideTags();
+		this.props.tagHandler(e);
 	},
 
 	setTag: function (tag) {
-		return (
-			React.createElement("li", { key: tag.value },
-				React.createElement("span", { 'data-value': tag.value, onClick: this.props.tagHandler }, tag.title)
-			)
-		)
+		return React.createElement("li", { key: tag.value, 'data-value': tag.value, onClick: this.tagHandler }, tag.title)
 	},
 
 	render: function () {
@@ -56,7 +54,8 @@ var Controls = React.createClass({
 		var currentTag = 'All';
 
 		for (var i = this.tags.length - 1; i >= 0; i--) {
-			tags[i] = this.setTag(this.tags[i]);
+			if (this.state.showTags)
+				tags[i] = this.setTag(this.tags[i]);
 
 			if (this.props.tag === this.tags[i].value)
 				currentTag = this.tags[i].title;
@@ -76,7 +75,7 @@ var Controls = React.createClass({
 				),
 				React.createElement("div", { className: "panel" },
 					React.createElement("label", null, 'Tag'),
-					React.createElement("p", { id: 'tagHandler' }, currentTag),
+					React.createElement("p", { id: 'tagHandler', onClick: this.toggleTags }, currentTag),
 					React.createElement("ul", { id: 'tags', className: 'dropdown' }, tags)
 				),
 				React.createElement("span", { className: 'fa_button', id: 'backButton', 'data-pointer': 0, onClick: this.props.buttonHandler },
