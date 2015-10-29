@@ -269,17 +269,17 @@ var HoH = React.createClass({
 
 		if (this.state.itemDetail !== false)
 			var itemDetail = this.state.itemDetail;
-		else if (isset(this.props.initwikidata.itemDetail) && checkPropsAgainstUrl)
+		else if (isset(this.props.initwikidata) && isset(this.props.initwikidata.itemDetail) && checkPropsAgainstUrl)
 			var itemDetail = this.props.initwikidata.itemDetail;
 
 		if (this.state.wikiData !== false)
 			var wikiData = this.state.wikiData;
-		else if (isset(this.props.initwikidata.wikiData) && checkPropsAgainstUrl)
+		else if (isset(this.props.initwikidata) && isset(this.props.initwikidata.wikiData) && checkPropsAgainstUrl)
 			var wikiData = this.props.initwikidata.wikiData;
 
 		if (this.state.wikiImages !== false)
 			var wikiImages = this.state.wikiImages;
-		else if (isset(this.props.initwikidata.wikiImages) && checkPropsAgainstUrl)
+		else if (isset(this.props.initwikidata) && isset(this.props.initwikidata.wikiImages) && checkPropsAgainstUrl)
 			var wikiImages = this.props.initwikidata.wikiImages;
 
 		if (itemDetail !== false) {
