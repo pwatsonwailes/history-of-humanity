@@ -265,7 +265,9 @@ var HoH = React.createClass({
 			&& this.props.initparams.position === parts[1]
 			&& this.props.initparams.name === parts[2]);
 
-		var itemDetail = false;
+		var itemDetail = false,
+			wikiData = false,
+			wikiImages = false;
 
 		if (this.state.itemDetail !== false)
 			var itemDetail = this.state.itemDetail;
