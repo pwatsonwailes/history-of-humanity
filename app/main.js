@@ -22,7 +22,7 @@ window.app = (function() {
 		var params = { year: parts[0], position: parts[1], name: parts[2] };
 
     var initData = {
-      itemDetail: timelineJsonData[req.params.year][req.params.position],
+      itemDetail: timelineJsonData[params.year][params.position],
       wikiData: false,
       wikiImages: []
     };
