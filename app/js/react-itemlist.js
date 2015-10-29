@@ -80,7 +80,8 @@ var ItemList = React.createClass({
 		if (parseInt(this.state.jumpTo) === parseInt(key))
 			className += ' highlightClick';
 
-		var title = item.links.main.link.replace('//en.wikipedia.org/wiki/', '');
+
+		var title = (isset(item.links) && isset(item.links.main) && isset(item.links.main.link)) ? item.links.main.link.replace('//en.wikipedia.org/wiki/', '') : '';
 
 		return (
 			React.createElement("li", { key: key, id: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.itemHandler },
