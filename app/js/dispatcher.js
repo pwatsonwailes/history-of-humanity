@@ -254,18 +254,46 @@ var HoH = React.createClass({
 	},
 
 	renderItemDetail: function () {
-		return (
-			React.createElement("div", { key: "itemDetailContainer" },
-				React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, onClick: this.hideItemDetail },
-					React.createElement("i", { className: 'fa fa-times' })
-				),
-				React.createElement(ItemDetail, {
-					itemDetail: (this.state.itemDetail !== false) ? this.state.itemDetail : this.props.initwikidata.itemDetail,
-					wikiData: (this.state.wikiData !== false) ? this.state.wikiData : this.props.initwikidata.wikiData,
-					wikiImages: (this.state.wikiImages !== false) ? this.state.wikiImages : this.props.initwikidata.wikiImages
-				})
+		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
+		
+		var checkPropsAgainstUrl = (isset(this.props.initparams)
+			&& this.props.initparams.year === parts[0]
+			&& this.props.initparams.position === parts[1]
+			&& this.props.initparams.name === parts[2]);
+
+		var itemDetail = false;
+
+		if (this.state.itemDetail !== false)
+			var itemDetail = this.state.itemDetail;
+		else if (isset(this.props.initwikidata.itemDetail) && checkPropsAgainstUrl)
+			var itemDetail = this.props.initwikidata.itemDetail;
+
+		if (this.state.wikiData !== false)
+			var wikiData = this.state.wikiData;
+		else if (isset(this.props.initwikidata.wikiData) && checkPropsAgainstUrl)
+			var wikiData = this.props.initwikidata.wikiData;
+
+		if (this.state.wikiImages !== false)
+			var wikiImages = this.state.wikiImages;
+		else if (isset(this.props.initwikidata.wikiImages) && checkPropsAgainstUrl)
+			var wikiImages = this.props.initwikidata.wikiImages;
+
+		if (itemDetail !== false) {
+			return (
+				React.createElement("div", { key: "itemDetailContainer" },
+					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, onClick: this.hideItemDetail },
+						React.createElement("i", { className: 'fa fa-times' })
+					),
+					React.createElement(ItemDetail, {
+						itemDetail: itemDetail,
+						wikiData: wikiData,
+						wikiImages: wikiImages
+					})
+				)
 			)
-		)
+		}
+		else
+			return [];
 	},
 
 	render: function () {
