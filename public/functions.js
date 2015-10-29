@@ -119,7 +119,7 @@ function init () {
 	light.position.set(-1,0,1);
 	scene.add(light);
 	
-	smokeTexture = THREE.ImageUtils.loadTexture('/imgs/Smoke-Element.png');
+	smokeTexture = THREE.ImageUtils.loadTexture('/history-of-humanity/imgs/Smoke-Element.png');
 	smokeMaterial = new THREE.MeshLambertMaterial({
 		color: 0x93887d,
 		map: smokeTexture,
