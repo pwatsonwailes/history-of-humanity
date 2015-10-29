@@ -17,7 +17,7 @@ window.app = (function() {
       return alert("Sorry, but your browser does not support " + feature + " so this app won't work properly.");
   };
 
-  if (window.location.pathname !== '/') {
+  if (window.location.pathname !== '/history-of-humanity/') {
     var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
     var initData = { year: parts[0], position: parts[1], name: parts[2] }
   }
