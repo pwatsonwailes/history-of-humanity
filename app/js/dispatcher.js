@@ -38,14 +38,11 @@ var HoH = React.createClass({
 
 		if (isset(this.props.initparams) && this.props.initparams.year !== false)
 			this.setItemDetail({"target": {"dataset": { "year": this.props.initparams.year, position: this.props.initparams.position }}});
-
-		this.setPageCount(this.props.timeline.length);
 	
 		History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
 
 	},
 
-	setPageCount: function (length) { this.setState({ nPages: Math.ceil(length / this.state.nRows) }) },
 	handlePaginatorClicked: function(item) { this.setState({ pointer: item }) },
 
 	updateItems: function (dateType, newDate, newTag) {
@@ -84,7 +81,7 @@ var HoH = React.createClass({
 		newState.tag = newTag;
 
 		newState.selectedItems = items;
-		update = true;
+		newState.nPages = Math.ceil(items.length / this.state.nRows);
 
 		if (dateType !== false)
 			newState[dateType] = newDate;
