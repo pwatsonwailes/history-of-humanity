@@ -7,7 +7,8 @@ var React = require('react/addons'),
 	Controls = require('./react-controls.js'),
 	GMap = require('./react-gmaps.js'),
 	ItemList = require('./react-itemlist.js'),
-	ItemDetail = require('./react-itemdetail.js');
+	ItemDetail = require('./react-itemdetail.js'),
+	Pagination = require('./react-pagination.js');
 
 React.initializeTouchEvents(true);
 
@@ -18,8 +19,9 @@ var HoH = React.createClass({
 		return {
 			startDate: 0,
 			endDate: 0,
+			nRows: 25,
+			nPages: 0,
 			pointer: 0,
-			show: 25,
 			tag: false,
 			selectedItems: [],
 			highlightLatLong: false,
@@ -29,20 +31,22 @@ var HoH = React.createClass({
 		}
 	},
 
-	componentWillMount: function () {
-		this.updateItems(false, false, false);
-	},
+	componentWillMount: function () { this.updateItems(false, false, false) },
 
 	componentDidMount: function () {
 		var self = this;
 
 		if (isset(this.props.initparams) && this.props.initparams.year !== false)
 			this.setItemDetail({"target": {"dataset": { "year": this.props.initparams.year, position: this.props.initparams.position }}});
+
+		this.setPageCount(this.props.timeline.length);
 	
-		History.Adapter.bind(window, 'statechange', function() {
-			self.historyUpdate();
-		});
+		History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
+
 	},
+
+	setPageCount: function (length) { this.setState({ nPages: Math.ceil(length / this.state.nRows) }) },
+	handlePaginatorClicked: function(item) { this.setState({ pointer: item }) },
 
 	updateItems: function (dateType, newDate, newTag) {
 		var newState = {};
@@ -74,8 +78,8 @@ var HoH = React.createClass({
 			}
 		}
 
-		if (this.state.pointer >= Math.floor(items.length / this.state.show))
-			newState.pointer = Math.floor(items.length / this.state.show);
+		if (this.state.pointer >= Math.floor(items.length / this.state.nRows))
+			newState.pointer = Math.floor(items.length / this.state.nRows);
 
 		newState.tag = newTag;
 
@@ -224,9 +228,9 @@ var HoH = React.createClass({
 		else if (isset(e.target.dataset.pointer))
 			var pointer = e.target.dataset.pointer;
 
-		if (pointer === '1' && (this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.show)))
+		if (pointer === '1' && (this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.nRows)))
 			var newPointer = this.state.pointer + 1
-		else if (pointer === '1' && (this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.show)))
+		else if (pointer === '1' && (this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.nRows)))
 			update = false;
 		else if (pointer === '0' && this.state.pointer > 0)
 			var newPointer = this.state.pointer - 1;
@@ -316,7 +320,7 @@ var HoH = React.createClass({
 						items: this.state.selectedItems,
 						pointer: this.state.pointer,
 						handleMarkerClick: this.handleMarkerClick,
-						show: this.state.show
+						show: this.state.nRows
 					}),
 					React.createElement(Controls, {
 						startDate: this.state.startDate,
@@ -331,10 +335,16 @@ var HoH = React.createClass({
 					items: this.state.selectedItems,
 					highlightLatLong: this.state.highlightLatLong,
 					pointer: this.state.pointer,
-					show: this.state.show,
+					show: this.state.nRows,
 					itemHandler: this.setItemDetail
 				}),
-				itemDetail
+				itemDetail,
+				React.createElement(Pagination, {
+					nPages: this.state.nPages,
+					maxBlocks: "11",
+					clickHandler: this.handlePaginatorClicked,
+					pointer: this.state.pointer
+				})
 			)
 		);
 	}

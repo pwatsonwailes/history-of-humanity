@@ -478,6 +478,37 @@ body {
 	z-index: 200;
 }
 
+//
+// pagination
+//
+
+.paginator {
+	.od-inline();
+
+	li {
+		cursor: pointer;
+		margin: 0;
+		padding: 2px 10px;
+
+		&.selected {
+			color: #00b5ff;
+			padding: 2px 10px;
+		}
+
+		&.no_more {
+			.border-radius(2px);
+			background-color: #535f5f;
+			color: #fff;
+			padding: 2px 10px;
+		}
+
+		&:hover {
+			color: #535f5f;
+			padding: 2px 10px;
+		}
+	}
+}
+
 #footer {
 	background: #222;
 	color: #ccc;
