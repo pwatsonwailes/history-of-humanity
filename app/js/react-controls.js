@@ -26,7 +26,7 @@ var Controls = React.createClass({
 		{ value: 'space', title: 'Space' },
 		{ value: 'sport', title: 'Sport' },
 		{ value: 'technology', title: 'Technology' },
-		 {wevalue: 'terrorism', title: 'Terrorism' },
+		{ value: 'terrorism', title: 'Terrorism' },
 		{ value: 'toys', title: 'Toys' },
 		{ value: 'transport', title: 'Transport' },
 		{ value: 'treaty', title: 'Treaty' },
