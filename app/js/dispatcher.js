@@ -304,7 +304,7 @@ var HoH = React.createClass({
 		var highchartKey = this.state.startDate.toString() + this.state.endDate.toString();
 		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
 
-		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata.itemDetail))
+		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata))
 			? this.renderItemDetail()
 			: [];
 
