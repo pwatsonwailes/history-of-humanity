@@ -260,9 +260,9 @@ var HoH = React.createClass({
 					React.createElement("i", { className: 'fa fa-times' })
 				),
 				React.createElement(ItemDetail, {
-					itemDetail: (isset(this.props.initwikidata)) ? this.props.initwikidata.itemDetail : this.state.itemDetail,
-					wikiData: (isset(this.props.initwikidata)) ? this.props.initwikidata.wikiData : this.state.wikiData,
-					wikiImages: (isset(this.props.initwikidata)) ? this.props.initwikidata.wikiImages : this.state.wikiImages
+					itemDetail: (this.state.itemDetail !== false) ? this.state.itemDetail : this.props.initwikidata.itemDetail,
+					wikiData: (this.state.wikiData !== false) ? this.state.wikiData : this.props.initwikidata.wikiData,
+					wikiImages: (this.state.wikiImages !== false) ? this.state.wikiImages : this.props.initwikidata.wikiImages
 				})
 			)
 		)
@@ -271,7 +271,10 @@ var HoH = React.createClass({
 	render: function () {
 		var highchartKey = this.state.startDate.toString() + this.state.endDate.toString();
 		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
-		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata)) ? this.renderItemDetail() : [];
+
+		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata.itemDetail))
+			? this.renderItemDetail()
+			: [];
 
 		return (
 			React.createElement("div", { id: "hohContainer", onClick: this.hideItemDetail },
