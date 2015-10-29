@@ -26,7 +26,7 @@ var Controls = React.createClass({
 		{ value: 'space', title: 'Space' },
 		{ value: 'sport', title: 'Sport' },
 		{ value: 'technology', title: 'Technology' },
-		{ value: 'terrorism', title: 'Terrorism' },
+		 {wevalue: 'terrorism', title: 'Terrorism' },
 		{ value: 'toys', title: 'Toys' },
 		{ value: 'transport', title: 'Transport' },
 		{ value: 'treaty', title: 'Treaty' },
@@ -59,7 +59,12 @@ var Controls = React.createClass({
 
 			if (this.props.tag === this.tags[i].value)
 				currentTag = this.tags[i].title;
-		};
+		}
+
+		var listClass = 'dropdown';
+
+		if (this.state.showTags)
+			listClass += ' active';
 
 		return (
 			React.createElement("div", { id: "controls" },
@@ -76,7 +81,7 @@ var Controls = React.createClass({
 				React.createElement("div", { className: "panel" },
 					React.createElement("label", null, 'Tag'),
 					React.createElement("p", { id: 'tagHandler', onClick: this.toggleTags }, currentTag),
-					React.createElement("ul", { id: 'tags', className: 'dropdown' }, tags)
+					React.createElement("ul", { id: 'tags', className: listClass }, tags)
 				),
 				React.createElement("span", { className: 'fa_button', id: 'backButton', 'data-pointer': 0, onClick: this.props.buttonHandler },
 					React.createElement("i", { className: 'fa fa-angle-double-left' })
