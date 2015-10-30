@@ -16,12 +16,16 @@ var HoH = React.createClass({
 	displayName: "HoH",
 
 	getInitialState: function (props) {
+		props = props || this.props;
+
+		var pointer = (isset(props.initparams.pointer)) ? props.initparams.pointer : 0;
+
 		return {
 			startDate: 0,
 			endDate: 0,
 			nRows: 25,
 			nPages: 0,
-			pointer: 0,
+			pointer: pointer,
 			tag: false,
 			selectedItems: [],
 			highlightLatLong: false,
