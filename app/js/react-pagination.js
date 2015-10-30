@@ -1,3 +1,5 @@
+function isset (obj) { return typeof obj !== 'undefined'; }
+
 var React = require('react/addons');
 
 Pagination = React.createClass({
@@ -5,7 +7,11 @@ Pagination = React.createClass({
 
 	clickHandler: function (e) {
 		e.preventDefault();
-		this.props.clickHandler(parseInt(e.target.dataset.pointer));
+
+		if (isset(e.target.dataset.pointer))
+			this.props.clickHandler(parseInt(e.target.dataset.pointer));
+		else
+			this.props.clickHandler(parseInt(e.target.parentNode.dataset.pointer));
 	},
 
 	updateArr: function () {
@@ -48,15 +54,15 @@ Pagination = React.createClass({
 
 		if (i === 'prev') {
 			return (
-				React.createElement("li", { key: i, className: selectedClass },
-					React.createElement("a", { href: '/history-of-humanity/', 'data-pointer': 0, onClick: this.clickHandler }, '1')
+				React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
+					React.createElement("a", { href: '/history-of-humanity/', 'data-pointer': 0 }, '1')
 				)
 			)
 		}
 		else if (i === 'next') {
 			return (
-				React.createElement("li", { key: i, className: selectedClass },
-					React.createElement("a", { href: '/history-of-humanity/p/' + this.props.nPages, 'data-pointer': this.props.nPages - 1, onClick: this.clickHandler }, this.props.nPages)
+				React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
+					React.createElement("a", { href: '/history-of-humanity/p/' + this.props.nPages, 'data-pointer': this.props.nPages - 1 }, this.props.nPages)
 				)
 			)
 		}
@@ -64,8 +70,8 @@ Pagination = React.createClass({
 			return React.createElement("li", { key: i, className: "more" }, "...")
 		else {
 			var n =  i + 1;
-			return React.createElement("li", { key: i, className: selectedClass },
-				React.createElement("a", { href: '/history-of-humanity/p/' + n, 'data-pointer': i, onClick: this.clickHandler }, n)
+			return React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
+				React.createElement("a", { href: '/history-of-humanity/p/' + n, 'data-pointer': i }, n)
 			);
 		}
 	},
