@@ -484,7 +484,6 @@ body {
 
 .paginator {
 	.od-inline();
-	color: #ccc;
 	text-align: center;
 
 	li {
@@ -492,21 +491,26 @@ body {
 		margin: 0;
 		padding: 2px 10px;
 
-		&.selected a {
-			color: #00b5ff;
+		a { color: #ccc; }
+
+		&.selected {
 			padding: 2px 10px;
+
+			a { color: #00b5ff; }
 		}
 
-		&.no_more a {
+		&.no_more {
 			.border-radius(2px);
 			background-color: #535f5f;
-			color: #fff;
 			padding: 2px 10px;
+
+			a { color: #fff; }
 		}
 
-		&:hover a {
-			color: #535f5f;
+		&:hover {
 			padding: 2px 10px;
+
+			a { color: #535f5f; }
 		}
 	}
 }
