@@ -45,9 +45,7 @@ var Controls = React.createClass({
 		this.props.tagHandler(e);
 	},
 
-	setTag: function (tag) {
-		return React.createElement("li", { key: tag.value, 'data-value': tag.value, onClick: this.tagHandler }, tag.title)
-	},
+	renderTag: function (tag) { return React.createElement("li", { key: tag.value, 'data-value': tag.value, onClick: this.tagHandler }, tag.title) },
 
 	render: function () {
 		var tags = [];
@@ -55,7 +53,7 @@ var Controls = React.createClass({
 
 		for (var i = this.tags.length - 1; i >= 0; i--) {
 			if (this.state.showTags)
-				tags[i] = this.setTag(this.tags[i]);
+				tags[i] = this.renderTag(this.tags[i]);
 
 			if (this.props.tag === this.tags[i].value)
 				currentTag = this.tags[i].title;

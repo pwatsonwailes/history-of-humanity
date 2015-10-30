@@ -244,13 +244,17 @@ var HoH = React.createClass({
 		else
 			var newPointer = 0;
 
-		if (update)
+		if (update) {
 			this.setState({ pointer: newPointer });
+
+			if (newPointer === 0)
+				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+			else
+				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + newPointer);
+		}
 	},
 
-	handleMarkerClick: function (e) {
-		this.setState({ highlightLatLong: e })
-	},
+	handleMarkerClick: function (e) { this.setState({ highlightLatLong: e }) },
 
 	updateTag: function (e) {
 		e.preventDefault();
