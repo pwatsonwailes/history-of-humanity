@@ -12,6 +12,12 @@ module.exports = function(app) {
 		res.render('index.ejs', { reactOutput: staticHTML });
 	});
 
+	app.get('/p/:n', function(req, res) {
+		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
+		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: false }));
+		res.render('index.ejs', { reactOutput: staticHTML });
+	});
+
 	app.get('/:year/:position/:name', function(req, res) {
 		var initData = {
 			itemDetail: timelineJsonData[req.params.year][req.params.position],
