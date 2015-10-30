@@ -43,7 +43,7 @@ Pagination = React.createClass({
 		return arr;
 	},
 
-	paginationItems: function (i) {
+	renderPaginationItems: function (i) {
 		var selectedClass = (this.props.pointer === i) ? "selected clickable" : "clickable";
 
 		if (i === 'prev') {
@@ -70,25 +70,23 @@ Pagination = React.createClass({
 		}
 	},
 
-	noPagination: function () {
-		return  React.createElement("li", { className: 'no_more' }, "No other pages")
-	},
+	renderNoPagination: function () { return  React.createElement("li", { className: 'no_more' }, "No other pages") },
 
 	render: function () {
 		var className = 'paginator on';
 
 		if (this.props.nPages > 1) {
 			var arr = this.updateArr();
-			var paginations = arr.map(this.paginationItems)
+			var pagination = arr.map(this.renderPaginationItems)
 		}
 		else if (this.props.nPages = 0)
-			var paginations = this.noPagination();
+			var pagination = this.renderNoPagination();
 		else {
-			var paginations = [];
+			var pagination = [];
 			className = 'paginator';
 		}
 
-		return React.createElement("ul", { className: className }, paginations)
+		return React.createElement("ul", { className: className }, pagination)
 	}
 });
 
