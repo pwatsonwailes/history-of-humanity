@@ -46,7 +46,7 @@ window.app = (function() {
 	else if (String(window.location.pathname).match(/\/history-of-humanity\/p\/\d+/i) !== null) {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
-		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parts[0], year: false, position: false, name: false } }), document.getElementById('hoh'));
+		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parts[1], year: false, position: false, name: false } }), document.getElementById('hoh'));
 	}
 	else {
 		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
