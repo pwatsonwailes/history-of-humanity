@@ -17,9 +17,9 @@ window.app = (function() {
 			return alert("Sorry, but your browser does not support " + feature + " so this app won't work properly.");
 	};
 
-	if (window.location.pathname !== '/history-of-humanity/') {
+	if (String(window.location.pathname).match(/\/history-of-humanity\/\d+\/\d+\/.+/i) !== null) {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
-		var params = { year: parts[0], position: parts[1], name: parts[2] };
+		var params = { pointer: 0, year: parts[0], position: parts[1], name: parts[2] };
 
     var initData = {
       itemDetail: timelineJsonData[params.year][params.position],
@@ -43,8 +43,13 @@ window.app = (function() {
 			console.log(e);
 		});
 	}
+	else if (String(window.location.pathname).match(/\/history-of-humanity\/p\/\d+/i) !== null) {
+		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
+
+		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parts[0], year: false, position: false, name: false } }), document.getElementById('hoh'));
+	}
 	else {
-		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { year: false, position: false, name: false } }), document.getElementById('hoh'));
+		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
 	}
 
 })();

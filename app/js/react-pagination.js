@@ -3,6 +3,11 @@ var React = require('react/addons');
 Pagination = React.createClass({
 	displayName: "Pagination",
 
+	clickHandler: function (e) {
+		e.preventDefault();
+		this.props.clickHandler(e.target.dataset.pointer);
+	},
+
 	updateArr: function () {
 		var arr = [];
 
@@ -38,40 +43,50 @@ Pagination = React.createClass({
 		return arr;
 	},
 
-	paginationItems: function (i) {
+	renderPaginationItems: function (i) {
 		var selectedClass = (this.props.pointer === i) ? "selected clickable" : "clickable";
 
-		if (i === 'prev')
-			return React.createElement("li", { key: i, className: selectedClass, onClick: this.props.clickHandler.bind(null, 0) }, "1")
-		else if (i === 'next')
-			return React.createElement("li", { key: i, className: selectedClass, onClick: this.props.clickHandler.bind(null, this.props.nPages - 1) }, this.props.nPages)
+		if (i === 'prev') {
+			return (
+				React.createElement("li", { key: i, className: selectedClass },
+					React.createElement("a", { href: '/history-of-humanity/', 'data-pointer': 0, onClick: this.clickHandler }, '1')
+				)
+			)
+		}
+		else if (i === 'next') {
+			return (
+				React.createElement("li", { key: i, className: selectedClass },
+					React.createElement("a", { href: '/history-of-humanity/p/' + this.props.nPages, 'data-pointer': this.props.nPages - 1, onClick: this.clickHandler }, this.props.nPages)
+				)
+			)
+		}
 		else if (i === 'hellip1' || i === 'hellip2')
 			return React.createElement("li", { key: i, className: "more" }, "...")
 		else {
-			var label =  i + 1;
-			return React.createElement("li", { key: i, className: selectedClass, onClick: this.props.clickHandler.bind(null, i) }, label);
+			var n =  i + 1;
+			return React.createElement("li", { key: i, className: selectedClass },
+				React.createElement("a", { href: '/history-of-humanity/p/' + n, 'data-pointer': i, onClick: this.clickHandler }, n)
+			);
 		}
 	},
 
-	noPagination: function () {
-		return  React.createElement("li", { className: 'no_more' }, "No other pages")
-	},
+	renderNoPagination: function () { return  React.createElement("li", { className: 'no_more' }, "No other pages") },
 
 	render: function () {
 		var className = 'paginator on';
 
 		if (this.props.nPages > 1) {
 			var arr = this.updateArr();
-			var paginations = arr.map(this.paginationItems)
+			var pagination = arr.map(this.renderPaginationItems)
 		}
 		else if (this.props.nPages = 0)
-			var paginations = this.noPagination();
+			var pagination = this.renderNoPagination();
 		else {
-			var paginations = [];
+			var pagination = [];
 			className = 'paginator';
 		}
 
-		return React.createElement("ul", { className: className }, paginations)
+		return React.createElement("ul", { className: className }, pagination)
 	}
 });
 

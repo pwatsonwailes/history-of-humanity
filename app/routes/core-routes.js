@@ -8,7 +8,13 @@ function isset (obj) { return typeof obj !== 'undefined'; }
 module.exports = function(app) {
 	app.get('/', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: false }));
+		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: 0 } }));
+		res.render('index.ejs', { reactOutput: staticHTML });
+	});
+
+	app.get('/p/:n', function(req, res) {
+		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
+		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
 		res.render('index.ejs', { reactOutput: staticHTML });
 	});
 
