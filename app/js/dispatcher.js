@@ -149,8 +149,12 @@ var HoH = React.createClass({
 		if (e.target.id === 'hohContainer' || e.target.id === 'hideItemDetail' || e.target.parentNode.id === 'hideItemDetail') {
 			this.setState({ itemDetail: false });
 
-			if (!isset(updateHistory) || updateHistory !== false)
-				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+			if (!isset(updateHistory) || updateHistory !== false) {
+				if (this.state.pointer === 0)
+					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+				else
+					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + this.state.pointer);
+			}
 		}
 	},
 
