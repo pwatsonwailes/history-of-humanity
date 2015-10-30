@@ -7,7 +7,6 @@ var ItemDetail = React.createClass({
 	displayName: "ItemDetail",
 
 	getInitialState: function () { return { galleryPointer: 0 } },
-
 	componentWillReceiveProps: function () { this.setState({ galleryPointer: 0 }); },
 
 	renderRelatedLink: function (link) {
@@ -18,21 +17,13 @@ var ItemDetail = React.createClass({
 		)
 	},
 
-	noRelatedLinks: function () {
-		return React.createElement("li", { key: 'relatedLink' }, 'No related links')
-	},
+	noRelatedLinks: function () { return React.createElement("li", { key: 'relatedLink' }, 'No related links') },
 
-	renderItemLocation: function (location) {
-		return React.createElement("li", { key: 'loc' + location }, location)
-	},
+	renderItemLocation: function (location) { return React.createElement("li", { key: 'loc' + location }, location) },
+	noLocations: function () { return React.createElement("li", { key: 'locations' }, 'No locations to show') },
 
-	noLocations: function () {
-		return React.createElement("li", { key: 'locations' }, 'No locations to show')
-	},
-
-	noImages: function () {
-		return React.createElement("p", { key: 'gallery' }, 'No images')
-	},
+	renderGalleryImg: function (imgUrl) { return React.createElement("img", { key: 'img' + imgUrl, className: 'galleryImg', src: imgUrl }) },
+	noImages: function () { return React.createElement("p", { key: 'gallery' }, 'No images') },
 
 	renderMainLink: function () {
 		if (isset(this.props.itemDetail.links.main)) {
@@ -45,10 +36,6 @@ var ItemDetail = React.createClass({
 		}
 		else
 			return []
-	},
-
-	renderGalleryImg: function (imgUrl) {
-		return React.createElement("img", { key: 'img' + imgUrl, className: 'galleryImg', src: imgUrl })
 	},
 
 	renderControls: function () {
@@ -76,9 +63,7 @@ var ItemDetail = React.createClass({
 			this.setState({ galleryPointer: newPointerPosition });
 	},
 
-	extracts: function (extract, i) {
-		return React.createElement("p", { key: 'extracts_' + i }, extract)
-	},
+	renderExtract: function (extract, i) { return React.createElement("p", { key: 'extracts_' + i }, extract) },
 
 	render: function () {
 		if (typeof window !== 'undefined')
@@ -111,7 +96,7 @@ var ItemDetail = React.createClass({
 
 			if (this.props.wikiData !== false && this.props.wikiData.extract !== false && this.props.wikiData.extract !== '') {
 				var paragraphs = this.props.wikiData.extract.split("\n");
-				var extract = paragraphs.map(this.extracts);
+				var extract = paragraphs.map(this.renderExtract);
 			}
 			else
 				extract = [];
@@ -126,13 +111,9 @@ var ItemDetail = React.createClass({
 						mainLink
 					),
 					React.createElement("h4", null, 'Locations'),
-					React.createElement("ul", null,
-						itemLocations
-					),
+					React.createElement("ul", null, itemLocations),
 					React.createElement("h4", null, 'Related Links'),
-					React.createElement("ul", null,
-						itemLinks
-					),
+					React.createElement("ul", null, itemLinks),
 					React.createElement("div", { id: 'galleryTitle' },
 						React.createElement("h4", null, 'Images'),
 						controls
