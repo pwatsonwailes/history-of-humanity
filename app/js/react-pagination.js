@@ -5,7 +5,7 @@ Pagination = React.createClass({
 
 	clickHandler: function (e) {
 		e.preventDefault();
-		this.props.clickHandler(e.target.dataset.pointer);
+		this.props.clickHandler(parseInt(e.target.dataset.pointer));
 	},
 
 	updateArr: function () {
