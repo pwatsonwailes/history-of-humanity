@@ -54,15 +54,15 @@ Pagination = React.createClass({
 
 		if (i === 'prev') {
 			return (
-				React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
-					React.createElement("a", { href: '/history-of-humanity/', 'data-pointer': 0 }, '1')
+				React.createElement("li", { key: i, className: selectedClass, 'data-pointer': 0, onClick: this.clickHandler },
+					React.createElement("a", { href: '/history-of-humanity/' }, '1')
 				)
 			)
 		}
 		else if (i === 'next') {
 			return (
-				React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
-					React.createElement("a", { href: '/history-of-humanity/p/' + this.props.nPages, 'data-pointer': this.props.nPages - 1 }, this.props.nPages)
+				React.createElement("li", { key: i, className: selectedClass, 'data-pointer': this.props.nPages - 1, onClick: this.clickHandler },
+					React.createElement("a", { href: '/history-of-humanity/p/' + this.props.nPages }, this.props.nPages)
 				)
 			)
 		}
@@ -70,8 +70,8 @@ Pagination = React.createClass({
 			return React.createElement("li", { key: i, className: "more" }, "...")
 		else {
 			var n =  i + 1;
-			return React.createElement("li", { key: i, className: selectedClass, onClick: this.clickHandler },
-				React.createElement("a", { href: '/history-of-humanity/p/' + n, 'data-pointer': i }, n)
+			return React.createElement("li", { key: i, className: selectedClass, 'data-pointer': i, onClick: this.clickHandler },
+				React.createElement("a", { href: '/history-of-humanity/p/' + n }, n)
 			);
 		}
 	},
