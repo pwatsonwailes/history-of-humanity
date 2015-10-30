@@ -18,7 +18,7 @@ var HoH = React.createClass({
 	getInitialState: function (props) {
 		props = props || this.props;
 
-		var pointer = (isset(props.initparams.pointer)) ? props.initparams.pointer : 0;
+		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) : 0;
 
 		return {
 			startDate: 0,
@@ -47,7 +47,7 @@ var HoH = React.createClass({
 	},
 
 	handlePaginatorClicked: function(n) {
-		this.setState({ pointer: n });
+		this.setState({ pointer: parseInt(n) });
 		History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n++);
 	},
 
