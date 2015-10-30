@@ -44,10 +44,12 @@ var HoH = React.createClass({
 			this.setItemDetail({"target": {"dataset": { "year": this.props.initparams.year, position: this.props.initparams.position }}});
 	
 		History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
-
 	},
 
-	handlePaginatorClicked: function(item) { this.setState({ pointer: item }) },
+	handlePaginatorClicked: function(n) {
+		this.setState({ pointer: n });
+		History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n++);
+	},
 
 	updateItems: function (dateType, newDate, newTag) {
 		var newState = {};
