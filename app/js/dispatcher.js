@@ -42,8 +42,9 @@ var HoH = React.createClass({
 
 		if (isset(this.props.initparams) && this.props.initparams.year !== false)
 			this.setItemDetail({"target": {"dataset": { "year": this.props.initparams.year, position: this.props.initparams.position }}});
-	
-		History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
+
+		if (typeof window !== 'undefined')
+			History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
 	},
 
 	handlePaginatorClicked: function(n) {
@@ -102,12 +103,12 @@ var HoH = React.createClass({
 	historyUpdate: function () {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
-    if (String(window.location.pathname).match(/\/history-of-humanity\/\d+\/\d+\/.+/i) !== null) {
+		if (String(window.location.pathname).match(/\/history-of-humanity\/\d+\/\d+\/.+/i) !== null) {
 			this.setItemDetail({"target": {"dataset": { "year": parts[0], "position": parts[1] }}}, false);
-    }
-    else {
-    	this.hideItemDetail({"target": {"id": "hohContainer"}}, false);
-    }
+		}
+		else {
+			this.hideItemDetail({"target": {"id": "hohContainer"}}, false);
+		}
 	},
 
 	setItemDetail: function (e, updateHistory) {
@@ -269,16 +270,19 @@ var HoH = React.createClass({
 			newVal = false;
 
 		this.updateItems('endDate', this.state.endDate, newVal);
-		window.tagToggler._closeMenu();
 	},
 
 	renderItemDetail: function () {
-		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
-		
-		var checkPropsAgainstUrl = (isset(this.props.initparams)
-			&& this.props.initparams.year === parts[0]
-			&& this.props.initparams.position === parts[1]
-			&& this.props.initparams.name === parts[2]);
+		var checkPropsAgainstUrl = true;
+
+		if (typeof window !== 'undefined') {
+			var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
+
+			checkPropsAgainstUrl = (isset(this.props.initparams)
+				&& this.props.initparams.year === parts[0]
+				&& this.props.initparams.position === parts[1]
+				&& this.props.initparams.name === parts[2]);
+		}
 
 		var itemDetail = false,
 			wikiData = false,

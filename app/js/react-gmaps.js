@@ -126,19 +126,15 @@ var GMap = React.createClass({
 
 			if (this.props.items.length > 0)
 				this.createMarkers();
+
+			window.addEventListener("resize", this.updateDimensions);
 		}
 
 		this.updateDimensions();
-		window.addEventListener("resize", this.updateDimensions);
 	},
 
-	componentWillUnmount: function() {
-		window.removeEventListener("resize", this.updateDimensions);
-	},
-
-	shouldComponentUpdate: function (newProps, newState) {
-		return newProps.mapsKey !== this.props.mapsKey || (this.state !== null && isset(this.state.width) && isset(newState.width) && newState.width !== this.state.width);
-	},
+	componentWillUnmount: function() { if (typeof window !== 'undefined') window.removeEventListener("resize", this.updateDimensions) },
+	shouldComponentUpdate: function (newProps, newState) { return newProps.mapsKey !== this.props.mapsKey || (this.state !== null && isset(this.state.width) && isset(newState.width) && newState.width !== this.state.width) },
 
 	componentDidUpdate: function () {
 		if (typeof google === 'object') {
