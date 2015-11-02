@@ -156,7 +156,7 @@ var HoH = React.createClass({
 				if (this.state.pointer === 0)
 					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
 				else
-					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + this.state.pointer);
+					History.pushState(null, 'Page ' + this.state.pointer + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + this.state.pointer);
 			}
 		}
 	},
