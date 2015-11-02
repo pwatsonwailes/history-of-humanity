@@ -47,7 +47,7 @@ window.app = (function() {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
 		if (parseInt(parts[1]) > 0)
-			return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parseInt(parts[1]), year: false, position: false, name: false } }), document.getElementById('hoh'));
+			return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
 		else
 			window.location.replace("https://labs.builtvisible.com/history-of-humanity/");
 	}
