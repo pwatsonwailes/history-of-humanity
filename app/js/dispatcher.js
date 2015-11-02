@@ -48,8 +48,8 @@ var HoH = React.createClass({
 	},
 
 	handlePaginatorClicked: function(n) {
-		var page = parseInt(n);
-		var i = page - 1;
+		var i = parseInt(n);
+		var page = i + 1;
 		this.setState({ pointer: i });
 
 
