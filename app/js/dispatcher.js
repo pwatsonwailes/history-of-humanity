@@ -18,7 +18,7 @@ var HoH = React.createClass({
 	getInitialState: function (props) {
 		props = props || this.props;
 
-		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) : 0;
+		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) - 1 : 0;
 
 		return {
 			startDate: 0,
