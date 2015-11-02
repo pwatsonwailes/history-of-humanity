@@ -36,7 +36,7 @@ module.exports = function(app) {
 
 				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 				var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: req.params, initwikidata: initData }));
-				var title = initData.wikiData.itemDetail.text + ' | ';
+				var title = initData.itemDetail.text + ' | ';
 				res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 			}
 		})
