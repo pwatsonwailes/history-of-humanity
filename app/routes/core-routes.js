@@ -9,13 +9,15 @@ module.exports = function(app) {
 	app.get('/', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: 0 } }));
-		res.render('index.ejs', { reactOutput: staticHTML });
+		var title = '';
+		res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 	});
 
 	app.get('/p/:n', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
-		res.render('index.ejs', { reactOutput: staticHTML });
+		var title = '';
+		res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 	});
 
 	app.get('/:year/:position/:name', function(req, res) {
@@ -34,7 +36,8 @@ module.exports = function(app) {
 
 				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 				var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: req.params, initwikidata: initData }));
-				res.render('index.ejs', { reactOutput: staticHTML });
+				var title = initData.wikiData.itemDetail.text + ' | ';
+				res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 			}
 		})
 		.catch(function (e) {
