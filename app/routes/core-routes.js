@@ -15,7 +15,7 @@ module.exports = function(app) {
 
 	app.get('/p/:n', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-		if (req.params.n > 1) {
+		if (req.params.n > 0) {
 			var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
 			var title = 'Page ' + req.params.n + ' | ';
 			res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
