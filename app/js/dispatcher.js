@@ -18,7 +18,7 @@ var HoH = React.createClass({
 	getInitialState: function (props) {
 		props = props || this.props;
 
-		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) - 1 : 0;
+		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) : 0;
 
 		return {
 			startDate: 0,
@@ -48,12 +48,13 @@ var HoH = React.createClass({
 	},
 
 	handlePaginatorClicked: function(n) {
-		this.setState({ pointer: parseInt(n) });
+		var page = parseInt(n);
+		var i = page - 1;
+		this.setState({ pointer: i });
 
-		n++;
 
-		if (n > 0)
-			History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n);
+		if (i > 0)
+			History.pushState(null, 'Page ' + page + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + page);
 		else
 			History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
 	},
@@ -158,7 +159,7 @@ var HoH = React.createClass({
 				if (this.state.pointer === 0)
 					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
 				else
-					History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + this.state.pointer);
+					History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n);
 			}
 		}
 	},

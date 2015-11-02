@@ -15,9 +15,13 @@ module.exports = function(app) {
 
 	app.get('/p/:n', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
-		var title = 'Page ' + req.params.n + ' | ';
-		res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
+		if (req.params.n > 1) {
+			var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
+			var title = 'Page ' + req.params.n + ' | ';
+			res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
+		}
+		else
+			res.redirect(301, 'https://labs.builtvisible.com/history-of-humanity/')
 	});
 
 	app.get('/:year/:position/:name', function(req, res) {
