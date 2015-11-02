@@ -50,8 +50,10 @@ var HoH = React.createClass({
 	handlePaginatorClicked: function(n) {
 		this.setState({ pointer: parseInt(n) });
 
+		n++;
+
 		if (n > 0)
-			History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n++);
+			History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n);
 		else
 			History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
 	},
