@@ -309,7 +309,7 @@ var HoH = React.createClass({
 		if (itemDetail !== false) {
 			return (
 				React.createElement("div", { key: "itemDetailContainer" },
-					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, onClick: this.hideItemDetail },
+					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500, onClick: this.hideItemDetail },
 						React.createElement("i", { className: 'fa fa-times' })
 					),
 					React.createElement(ItemDetail, {

@@ -136,7 +136,7 @@ var Social = React.createClass({
 
 	renderSocialIcons: function () {
 		return (
-			React.createElement(ReactCSSTransitionGroup, { key: 'socialIcons', id: 'socialIcons', transitionName: "socialTransition", transitionAppear: true, transitionAppearTimeout: 500 },
+			React.createElement(ReactCSSTransitionGroup, { key: 'socialIcons', id: 'socialIcons', transitionName: "socialTransition", transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500 },
 				React.createElement("div", { id: 'facebook', className: 'socialBox' },
 					React.createElement("span", { className: 'count' }, this.formatShareValue(this.state.counts.Facebook.total_count)),
 					React.createElement("span", { className: 'share', 'data-site': 'facebook', onClick: this.openWin },

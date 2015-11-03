@@ -104,7 +104,7 @@ var ItemDetail = React.createClass({
 			var controls = (gallery.length > 0) ? this.renderControls() : [];
 
 			return (
-				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 600 } },
+				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 600 } },
 					React.createElement("h3", null, this.props.itemDetail.text),
 					React.createElement("div", null,
 						extract,
