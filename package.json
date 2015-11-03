@@ -13,20 +13,23 @@
     "url": "https://github.com/Builtvisible/history-of-humanity.git"
   },
   "author": "petewailes",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/Builtvisible/history-of-humanity/issues"
   },
   "homepage": "https://github.com/Builtvisible/history-of-humanity",
   "devDependencies": {
     "browserify": "11.x",
-    "uglifyify": "3.0.x"
+    "uglifyify": "3.0.x",
+    "redux-devtools": "^2.1.5"
   },
   "dependencies": {
     "axios": "^0.5.4",
     "body-parser": "^1.13.3",
     "ejs": "^2.3.3",
     "express": "^4.13.3",
-    "react": "^0.13.3"
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "react-redux": "^4.0.0"
   }
 }
