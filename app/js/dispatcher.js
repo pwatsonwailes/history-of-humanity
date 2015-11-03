@@ -1,7 +1,7 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react/addons'),
-	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
+var React = require('react'),
+	ReactCSSTransitionGroup = require('react-addons-css-transition-group'),
 	axios = require('axios'),
 	Social = require('./react-social.js'),
 	Controls = require('./react-controls.js'),
@@ -9,8 +9,6 @@ var React = require('react/addons'),
 	ItemList = require('./react-itemlist.js'),
 	ItemDetail = require('./react-itemdetail.js'),
 	Pagination = require('./react-pagination.js');
-
-React.initializeTouchEvents(true);
 
 var HoH = React.createClass({
 	displayName: "HoH",
@@ -311,7 +309,7 @@ var HoH = React.createClass({
 		if (itemDetail !== false) {
 			return (
 				React.createElement("div", { key: "itemDetailContainer" },
-					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, onClick: this.hideItemDetail },
+					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, onClick: this.hideItemDetail },
 						React.createElement("i", { className: 'fa fa-times' })
 					),
 					React.createElement(ItemDetail, {

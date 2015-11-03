@@ -1,6 +1,6 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react/addons');
+var React = require('react');
 
 var ItemList = React.createClass({
 	displayName: "ItemList",

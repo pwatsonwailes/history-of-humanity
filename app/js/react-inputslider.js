@@ -1,5 +1,5 @@
 // based on //raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
-var React = require('react/addons');
+var React = require('react');
 
 var InputSlider = React.createClass({
 	displayName: 'InputSlider',

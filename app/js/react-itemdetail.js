@@ -1,7 +1,7 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react/addons'),
-	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var React = require('react'),
+	ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var ItemDetail = React.createClass({
 	displayName: "ItemDetail",
@@ -104,7 +104,7 @@ var ItemDetail = React.createClass({
 			var controls = (gallery.length > 0) ? this.renderControls() : [];
 
 			return (
-				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 600 } },
+				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 600 } },
 					React.createElement("h3", null, this.props.itemDetail.text),
 					React.createElement("div", null,
 						extract,

@@ -1,6 +1,6 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react/addons');
+var React = require('react');
 
 var GMap = React.createClass({
 	displayName: "GMap",
@@ -241,7 +241,7 @@ var GMap = React.createClass({
 			center: new google.maps.LatLng(this.props.centerLat, this.props.centerLng)
 		};
 
-		return new google.maps.Map(this.refs.mapCanvas.getDOMNode(), mapOptions);
+		return new google.maps.Map(this.refs.mapCanvas, mapOptions);
 	},
 
 	// If the map position is out of range, move it back

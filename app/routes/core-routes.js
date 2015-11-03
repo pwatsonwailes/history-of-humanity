@@ -1,4 +1,5 @@
-var React = require('react/addons'),
+var React = require('react'),
+	ReactDOMServer = require('react-dom/server'),
 	timelineJsonData = require('../data/timeline.json'),
 	axios = require('axios'),
 	HoH = React.createFactory(require('../js/dispatcher.js'));
@@ -8,7 +9,7 @@ function isset (obj) { return typeof obj !== 'undefined'; }
 module.exports = function(app) {
 	app.get('/', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-		var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: 0 } }));
+		var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: 0 } }));
 		var title = '';
 		res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 	});
@@ -16,7 +17,7 @@ module.exports = function(app) {
 	app.get('/p/:n', function(req, res) {
 		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 		if (req.params.n > 0) {
-			var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
+			var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
 			var title = 'Page ' + req.params.n + ' | ';
 			res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 		}
@@ -39,7 +40,7 @@ module.exports = function(app) {
 				initData.wikiData = output.data.query.pages[pageId];
 
 				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-				var staticHTML = React.renderToString(HoH ({ timeline: timelineJsonData, initparams: req.params, initwikidata: initData }));
+				var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: req.params, initwikidata: initData }));
 				var title = initData.itemDetail.text + ' | ';
 				res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
 			}

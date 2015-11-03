@@ -1,5 +1,5 @@
-var React = require("react/addons"),
-	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
+var React = require('react'),
+	ReactDOM = require('react-dom'),
 	axios = require('axios'),
 	timelineJsonData = require('./data/timeline.json'),
 	HoH = require('./js/dispatcher.js');
@@ -35,7 +35,7 @@ window.app = (function() {
 				initData.wikiData = output.data.query.pages[pageId];
 
 				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-				return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: params, initwikidata: initData }), document.getElementById('hoh'));
+				return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: params, initwikidata: initData }), document.getElementById('hoh'));
 			}
 		})
 		.catch(function (e) {
@@ -47,12 +47,12 @@ window.app = (function() {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
 		if (parseInt(parts[1]) > 0)
-			return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
+			return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
 		else
 			window.location.replace("https://labs.builtvisible.com/history-of-humanity/");
 	}
 	else {
-		return React.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
+		return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
 	}
 
 })();

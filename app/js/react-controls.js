@@ -1,4 +1,4 @@
-var React = require('react/addons'),
+var React = require('react'),
 	InputSlider = require('./react-inputslider.js');
 
 var Controls = React.createClass({
