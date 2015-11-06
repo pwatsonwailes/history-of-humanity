@@ -4,8 +4,8 @@
   "description": "A wikipedia powered React.JS demo application",
   "main": "server.js",
   "scripts": {
-    "build-dev": "browserify -e app/main.js -t babelify -o public/bundle.dev.js -d",
-    "build-min": "browserify -e app/main.js -t babelify -g uglifyify -o public/bundle.min.js",
+    "build-dev": "browserify app/main.js -o public/bundle.dev.js -t [ babelify --presets [ es2015 react stage-1 ] ]",
+    "build-min": "browserify app/main.js -g uglifyify -o public/bundle.min.js -t [ babelify --presets [ es2015 react stage-1 ] ]",
     "start": "node server.js"
   },
   "repository": {
@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/Builtvisible/history-of-humanity",
   "devDependencies": {
+    "babel-preset-es2015": "^6.x.x",
+    "babel-preset-react": "^6.x.x",
+    "babel-preset-stage-1": "^6.x.x",
     "babelify": "^7.2.0",
-    "browserify": "11.x",
-    "redux-devtools": "^2.1.5",
+    "browserify": "^12.x.x",
     "uglifyify": "3.0.x"
   },
   "dependencies": {
@@ -31,8 +33,6 @@
     "express": "^4.13.3",
     "react": "^0.14.2",
     "react-addons-css-transition-group": "^0.14.2",
-    "react-dom": "^0.14.2",
-    "react-redux": "^4.0.0",
-    "redux": "^3.0.4"
+    "react-dom": "^0.14.2"
   }
 }
