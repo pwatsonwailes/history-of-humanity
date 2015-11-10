@@ -1,41 +1,54 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react'),
-	ReactCSSTransitionGroup = require('react-addons-css-transition-group'),
-	axios = require('axios'),
-	Social = require('./react-social.js'),
-	Controls = require('./react-controls.js'),
-	GMap = require('./react-gmaps.js'),
-	ItemList = require('./react-itemlist.js'),
-	ItemDetail = require('./react-itemdetail.js'),
-	Pagination = require('./react-pagination.js');
+import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import axios from 'axios';
 
-var HoH = React.createClass({
-	displayName: "HoH",
+import Social from './react-social.js';
+import Controls from './react-controls.js';
+import GMap from './react-gmaps.js';
+import ItemList from './react-itemlist.js';
+import ItemDetail from './react-itemdetail.js';
+import Pagination from './react-pagination.js';
 
-	getInitialState: function (props) {
-		props = props || this.props;
+export default class HoH extends React.Component {
+	constructor(props) {
+		super(props);
 
-		var pointer = (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) : 0;
-
-		return {
+		this.state = {
 			startDate: 0,
 			endDate: 0,
 			nRows: 25,
 			nPages: 0,
-			pointer: pointer,
+			pointer: (isset(props.initparams.pointer)) ? parseInt(props.initparams.pointer) : 0,
 			tag: false,
 			selectedItems: [],
 			highlightLatLong: false,
 			itemDetail: false,
 			wikiData: false,
 			wikiImages: false
-		}
-	},
+		};
 
-	componentWillMount: function () { this.updateItems(false, false, false) },
+		this.componentDidMount = this.componentDidMount.bind(this);
+		this.handlePaginatorClicked = this.handlePaginatorClicked.bind(this);
+		this.updateItems = this.updateItems.bind(this);
+		this.historyUpdate = this.historyUpdate.bind(this);
+		this.setItemDetail = this.setItemDetail.bind(this);
+		this.hideItemDetail = this.hideItemDetail.bind(this);
+		this.setWikiData = this.setWikiData.bind(this);
+		this.updateDate = this.updateDate.bind(this);
+		this.updatePointer = this.updatePointer.bind(this);
+		this.handleMarkerClick = this.handleMarkerClick.bind(this);
+		this.updateTag = this.updateTag.bind(this);
+		this.renderItemDetail = this.renderItemDetail.bind(this);
 
-	componentDidMount: function () {
+	}
+
+	componentWillMount(props) {
+		this.updateItems(false, false, false)
+	}
+
+	componentDidMount() {
 		var self = this;
 
 		if (isset(this.props.initparams) && this.props.initparams.year !== false)
@@ -43,9 +56,9 @@ var HoH = React.createClass({
 
 		if (typeof window !== 'undefined')
 			History.Adapter.bind(window, 'statechange', function() { self.historyUpdate() })
-	},
+	}
 
-	handlePaginatorClicked: function(n) {
+	handlePaginatorClicked(n) {
 		var i = parseInt(n);
 		var page = i + 1;
 		this.setState({ pointer: i });
@@ -55,9 +68,9 @@ var HoH = React.createClass({
 			History.pushState(null, 'Page ' + page + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + page);
 		else
 			History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
-	},
+	}
 
-	updateItems: function (dateType, newDate, newTag) {
+	updateItems(dateType, newDate, newTag) {
 		var newState = {};
 		var items = [];
 		var n = 0;
@@ -70,12 +83,12 @@ var HoH = React.createClass({
 			newState.endDate = eDate;
 		}
 		else {
-			var sDate = (dateType === 'startDate') ? parseInt(newDate) : parseInt(this.state.startDate);
-			var eDate = (dateType === 'endDate') ? parseInt(newDate) : parseInt(this.state.endDate);
+			var sDate =(dateType === 'startDate') ? parseInt(newDate) : parseInt(this.state.startDate);
+			var eDate =(dateType === 'endDate') ? parseInt(newDate) : parseInt(this.state.endDate);
 		}
 
 		for (var i = sDate; i <= eDate; i++) {
-			var loopEnd = (isset(this.props.timeline[i])) ? this.props.timeline[i].length : 0;
+			var loopEnd =(isset(this.props.timeline[i])) ? this.props.timeline[i].length : 0;
 
 			for (var j = 0; j < loopEnd; j++) {
 				if ((newTag !== false && this.props.timeline[i][j].tags.indexOf(newTag) > -1) || newTag === false) {
@@ -99,9 +112,9 @@ var HoH = React.createClass({
 			newState[dateType] = newDate;
 
 		this.setState(newState);
-	},
+	}
 
-	historyUpdate: function () {
+	historyUpdate() {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
 		if (String(window.location.pathname).match(/\/history-of-humanity\/\d+\/\d+\/.+/i) !== null) {
@@ -110,9 +123,9 @@ var HoH = React.createClass({
 		else {
 			this.hideItemDetail({"target": {"id": "hohContainer"}}, false);
 		}
-	},
+	}
 
-	setItemDetail: function (e, updateHistory) {
+	setItemDetail(e, updateHistory) {
 		if (typeof e.preventDefault === 'function')
 			e.preventDefault();
 
@@ -145,9 +158,9 @@ var HoH = React.createClass({
 
 		if (!isset(updateHistory) || updateHistory !== false)
 			History.pushState(null, itemData.text + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/' + year + '/' + position + '/' + wikiTitle);
-	},
+	}
 
-	hideItemDetail: function (e, updateHistory) {
+	hideItemDetail(e, updateHistory) {
 		if (e.target.id === 'hohContainer' || e.target.id === 'hideItemDetail' || e.target.parentNode.id === 'hideItemDetail') {
 			this.setState({ itemDetail: false });
 
@@ -160,14 +173,14 @@ var HoH = React.createClass({
 					History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n);
 			}
 		}
-	},
+	}
 
-	setWikiData: function (wikiTitle) {
+	setWikiData(wikiTitle) {
 		var self = this;
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + wikiTitle;
 		var wikidata = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&")))
 
-		wikidata.then(function (res) {
+		wikidata.then(function(res) {
 			var newState = { wikiData: false, wikiImages: false };
 
 			if (isset(res.data.query.pages)) {
@@ -191,23 +204,23 @@ var HoH = React.createClass({
 						var wikiImgs = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(imgLink.replace(/&amp;/g, "&")));
 
 						if (i === 0) {
-							wikiImgs.then(function (imgRes) {
+							wikiImgs.then(function(imgRes) {
 								if (isset(imgRes.data.query.pages['-1']) && isset(imgRes.data.query.pages['-1'].imageinfo))
 									newState.wikiImages.push(imgRes.data.query.pages['-1'].imageinfo[0].url);
 
 								self.setState(newState);
 							})
-							.catch(function (e) {
+							.catch(function(e) {
 								console.log('error in xhr 2');
 								console.log(e);
 							});
 						}
 						else {
-							wikiImgs.then(function (imgRes) {
+							wikiImgs.then(function(imgRes) {
 								if (isset(imgRes.data.query.pages['-1']) && isset(imgRes.data.query.pages['-1'].imageinfo))
 									newState.wikiImages.push(imgRes.data.query.pages['-1'].imageinfo[0].url);
 							})
-							.catch(function (e) {
+							.catch(function(e) {
 								console.log('error in xhr 3');
 								console.log(e);
 							});
@@ -218,13 +231,13 @@ var HoH = React.createClass({
 					self.setState(newState);
 			}
 		})
-		.catch(function (e) {
+		.catch(function(e) {
 			console.log('error in xhr 1');
 			console.log(e);
 		});
-	},
+	}
 
-	updateDate: function (e) {
+	updateDate(e) {
 		if (!isNaN(e.x)) {
 			var year = Math.floor(e.x);
 
@@ -233,9 +246,9 @@ var HoH = React.createClass({
 			else if (e.name === 'endDate' && year !== this.state.endDate)
 				this.updateItems('endDate', year, this.state.tag);
 		}
-	},
+	}
 
-	updatePointer: function (e) {
+	updatePointer(e) {
 		var update = true;
 
 		if (isset(e.target.parentNode.dataset.pointer))
@@ -243,9 +256,9 @@ var HoH = React.createClass({
 		else if (isset(e.target.dataset.pointer))
 			var pointer = e.target.dataset.pointer;
 
-		if (pointer === '1' && (this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.nRows)))
+		if (pointer === '1' &&(this.state.pointer + 1 < Math.floor(this.state.selectedItems.length / this.state.nRows)))
 			var newPointer = this.state.pointer + 1
-		else if (pointer === '1' && (this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.nRows)))
+		else if (pointer === '1' &&(this.state.pointer + 1 >= Math.floor(this.state.selectedItems.length / this.state.nRows)))
 			update = false;
 		else if (pointer === '0' && this.state.pointer > 0)
 			var newPointer = this.state.pointer - 1;
@@ -260,11 +273,11 @@ var HoH = React.createClass({
 			else
 				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + newPointer);
 		}
-	},
+	}
 
-	handleMarkerClick: function (e) { this.setState({ highlightLatLong: e }) },
+	handleMarkerClick(e) { this.setState({ highlightLatLong: e }) }
 
-	updateTag: function (e) {
+	updateTag(e) {
 		e.preventDefault();
 
 		var newVal = e.target.dataset.value;
@@ -273,15 +286,15 @@ var HoH = React.createClass({
 			newVal = false;
 
 		this.updateItems('endDate', this.state.endDate, newVal);
-	},
+	}
 
-	renderItemDetail: function () {
+	renderItemDetail() {
 		var checkPropsAgainstUrl = true;
 
 		if (typeof window !== 'undefined') {
 			var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
-			checkPropsAgainstUrl = (isset(this.props.initparams)
+			checkPropsAgainstUrl =(isset(this.props.initparams)
 				&& this.props.initparams.year === parts[0]
 				&& this.props.initparams.position === parts[1]
 				&& this.props.initparams.name === parts[2]);
@@ -309,7 +322,15 @@ var HoH = React.createClass({
 		if (itemDetail !== false) {
 			return (
 				React.createElement("div", { key: "itemDetailContainer" },
-					React.createElement(ReactCSSTransitionGroup, { id: 'hideItemDetail', transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500, onClick: this.hideItemDetail },
+					React.createElement(ReactCSSTransitionGroup, {
+							id: 'hideItemDetail',
+							transitionName: 'itemDetailTransition',
+							transitionAppear: true,
+							transitionAppearTimeout: 500,
+							transitionEnterTimeout: 500,
+							transitionLeaveTimeout: 500,
+							onClick: this.hideItemDetail
+						},
 						React.createElement("i", { className: 'fa fa-times' })
 					),
 					React.createElement(ItemDetail, {
@@ -322,18 +343,21 @@ var HoH = React.createClass({
 		}
 		else
 			return [];
-	},
+	}
 
-	render: function () {
+	render() {
 		var highchartKey = this.state.startDate.toString() + this.state.endDate.toString();
 		var mapsKey = this.state.startDate.toString() + this.state.endDate.toString() + this.state.tag + this.state.pointer;
 
-		var itemDetail = (this.state.itemDetail !== false || isset(this.props.initwikidata))
+		var itemDetail =(this.state.itemDetail !== false || isset(this.props.initwikidata))
 			? this.renderItemDetail()
 			: [];
 
 		return (
-			React.createElement("div", { id: "hohContainer", onClick: this.hideItemDetail },
+			React.createElement("div", {
+					id: "hohContainer",
+					onClick: this.hideItemDetail
+				},
 				React.createElement(Social, null),
 				React.createElement("div", { id: "mapAndControls" },
 					React.createElement(GMap, {
@@ -372,6 +396,4 @@ var HoH = React.createClass({
 			)
 		);
 	}
-});
-
-module.exports = HoH;
+}
