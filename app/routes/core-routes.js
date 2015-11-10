@@ -1,25 +1,30 @@
-var React = require('react'),
-	ReactDOMServer = require('react-dom/server'),
-	timelineJsonData = require('../data/timeline.json'),
-	axios = require('axios'),
-	HoH = React.createFactory(require('../js/dispatcher.js'));
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import TimelineData from '../data/timeline.json';
+import axios from 'axios';
+import HoH from '../js/dispatcher.js';
 
-function isset (obj) { return typeof obj !== 'undefined'; }
-
+// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 module.exports = function(app) {
 	app.get('/', function(req, res) {
-		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-		var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: 0 } }));
-		var title = '';
-		res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
+		res.render('index.ejs', {
+			reactTitle: '',
+			reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
+				timeline: TimelineData,
+				initparams: { pointer: 0 }
+			}))
+		});
 	});
 
 	app.get('/p/:n', function(req, res) {
-		// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
 		if (req.params.n > 0) {
-			var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: { pointer: req.params.n - 1 } }));
-			var title = 'Page ' + req.params.n + ' | ';
-			res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
+			res.render('index.ejs', {
+				reactTitle: 'Page ' + req.params.n + ' | ',
+				reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
+					timeline: TimelineData,
+					initparams: { pointer: req.params.n - 1 }
+				}))
+			});
 		}
 		else
 			res.redirect(301, 'https://labs.builtvisible.com/history-of-humanity/')
@@ -27,7 +32,7 @@ module.exports = function(app) {
 
 	app.get('/:year/:position/:name', function(req, res) {
 		var initData = {
-			itemDetail: timelineJsonData[req.params.year][req.params.position],
+			itemDetail: TimelineData[req.params.year][req.params.position],
 			wikiData: false,
 			wikiImages: []
 		};
@@ -35,19 +40,23 @@ module.exports = function(app) {
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + req.params.name;
 
 		axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&"))).then(function (output) {
-			if (isset(output.data.query.pages)) {
+			if (typeof output.data.query.pages !== 'undefined') {
 				var pageId = Object.keys(output.data.query.pages);
 				initData.wikiData = output.data.query.pages[pageId];
 
-				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-				var staticHTML = ReactDOMServer.renderToString(HoH ({ timeline: timelineJsonData, initparams: req.params, initwikidata: initData }));
-				var title = initData.itemDetail.text + ' | ';
-				res.render('index.ejs', { reactTitle: title, reactOutput: staticHTML });
+				res.render('index.ejs', {
+					reactTitle: initData.itemDetail.text + ' | ',
+					reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
+						timeline: TimelineData,
+						initparams: req.params,
+						initwikidata: initData
+					}))
+				});
 			}
 		})
 		.catch(function (e) {
 			console.log('error in xhr');
 			console.log(e);
-		});
-	});
-};
+		})
+	})
+}
