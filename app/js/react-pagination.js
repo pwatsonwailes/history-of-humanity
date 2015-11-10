@@ -1,33 +1,38 @@
-function isset (obj) { return typeof obj !== 'undefined'; }
+import React from 'react';
 
-var React = require('react');
+export default class Pagination extends React.Component {
+	constructor() {
+		super();
 
-Pagination = React.createClass({
-	displayName: "Pagination",
+		this.clickHandler = this.clickHandler.bind(this);
+		this.updateArr = this.updateArr.bind(this);
+		this.renderPaginationItems = this.renderPaginationItems.bind(this);
+		this.renderNoPagination = this.renderNoPagination.bind(this);
+	}
 
-	clickHandler: function (e) {
+	clickHandler(e) {
 		e.preventDefault();
 
-		if (isset(e.target.dataset.pointer))
+		if (typeof e.target.dataset.pointer !== 'undefined')
 			this.props.clickHandler(parseInt(e.target.dataset.pointer));
 		else
 			this.props.clickHandler(parseInt(e.target.parentNode.dataset.pointer));
-	},
+	}
 
-	updateArr: function () {
+	updateArr() {
 		var arr = [];
 
 		if (this.props.maxBlocks - this.props.nPages < 2) {
-			maxPivotPages = Math.round((this.props.maxBlocks - 5) / 2);
-			minPage = Math.max(0, this.props.pointer - maxPivotPages);
-			maxPage = Math.min(this.props.nPages - 1, this.props.pointer + maxPivotPages * 2 - (this.props.pointer - minPage));
-			minPage = Math.max(0, minPage - (maxPivotPages * 2 - (maxPage - minPage)));
+			var maxPivotPages = Math.round((this.props.maxBlocks - 5) / 2);
+			var minPage = Math.max(0, this.props.pointer - maxPivotPages);
+			var maxPage = Math.min(this.props.nPages - 1, this.props.pointer + maxPivotPages * 2 -(this.props.pointer - minPage));
+			var minPage = Math.max(0, minPage - (maxPivotPages * 2 -(maxPage - minPage)));
 
 			var elipses = true;
 		}
 		else {
-			minPage = 0;
-			maxPage = this.props.nPages - 1;
+			var minPage = 0;
+			var maxPage = this.props.nPages - 1;
 
 			var elipses = false;
 		}
@@ -37,7 +42,7 @@ Pagination = React.createClass({
 			arr[1] = 'hellip1';
 		}
 
-		for (var i = minPage; i <= maxPage; i++) {
+		for(var i = minPage; i <= maxPage; i++) {
 			arr.push(i);
 		}
 
@@ -47,10 +52,10 @@ Pagination = React.createClass({
 		}
 
 		return arr;
-	},
+	}
 
-	renderPaginationItems: function (i) {
-		var selectedClass = (this.props.pointer === i) ? "selected clickable" : "clickable";
+	renderPaginationItems(i) {
+		var selectedClass =(this.props.pointer === i) ? "selected clickable" : "clickable";
 
 		if (i === 'prev') {
 			return (
@@ -74,18 +79,18 @@ Pagination = React.createClass({
 				React.createElement("a", { href: '/history-of-humanity/p/' + n }, n)
 			);
 		}
-	},
+	}
 
-	renderNoPagination: function () { return  React.createElement("li", { className: 'no_more' }, "No other pages") },
+	renderNoPagination() { return  React.createElement("li", { className: 'no_more' }, "No other pages") }
 
-	render: function () {
+	render() {
 		var className = 'paginator on';
 
 		if (this.props.nPages > 1) {
 			var arr = this.updateArr();
 			var pagination = arr.map(this.renderPaginationItems)
 		}
-		else if (this.props.nPages = 0)
+		else if (this.props.nPages === 0)
 			var pagination = this.renderNoPagination();
 		else {
 			var pagination = [];
@@ -94,6 +99,4 @@ Pagination = React.createClass({
 
 		return React.createElement("ul", { className: className }, pagination)
 	}
-});
-
-module.exports = Pagination;
+}

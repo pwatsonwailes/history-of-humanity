@@ -1,31 +1,54 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react'),
-	ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-var ItemDetail = React.createClass({
-	displayName: "ItemDetail",
+export default class ItemDetail extends React.Component {
+	constructor() {
+		super();
 
-	getInitialState: function () { return { galleryPointer: 0 } },
-	componentWillReceiveProps: function () { this.setState({ galleryPointer: 0 }); },
+		this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+		this.renderRelatedLink = this.renderRelatedLink.bind(this);
+		this.noRelatedLinks = this.noRelatedLinks.bind(this);
+		this.renderItemLocation = this.renderItemLocation.bind(this);
+		this.noLocations = this.noLocations.bind(this);
+		this.renderGalleryImg = this.renderGalleryImg.bind(this);
+		this.noImages = this.noImages.bind(this);
+		this.renderMainLink = this.renderMainLink.bind(this);
+		this.renderControls = this.renderControls.bind(this);
+		this.buttonHandler = this.buttonHandler.bind(this);
+		this.renderExtract = this.renderExtract.bind(this);
 
-	renderRelatedLink: function (link) {
+		this.state = {
+			galleryPointer: 0,
+			maxHeight: 600
+		};
+	}
+
+	componentDidMount() {
+		if (typeof window !== 'undefined')
+			this.setState({ maxHeight: getViewportSize().height - 20 })
+	}
+	
+	componentWillReceiveProps() { this.setState({ galleryPointer: 0 }); }
+
+	renderRelatedLink(link) {
 		return (
 			React.createElement("li", { key: 'relatedLink' + link.link },
 				React.createElement("a", { href: link.link, target: '_blank' }, link.title)
 			)
 		)
-	},
+	}
 
-	noRelatedLinks: function () { return React.createElement("li", { key: 'relatedLink' }, 'No related links') },
+	noRelatedLinks() { return React.createElement("li", { key: 'relatedLink' }, 'No related links') }
 
-	renderItemLocation: function (location) { return React.createElement("li", { key: 'loc' + location }, location) },
-	noLocations: function () { return React.createElement("li", { key: 'locations' }, 'No locations to show') },
+	renderItemLocation(location) { return React.createElement("li", { key: 'loc' + location }, location) }
+	noLocations() { return React.createElement("li", { key: 'locations' }, 'No locations to show') }
 
-	renderGalleryImg: function (imgUrl) { return React.createElement("img", { key: 'img' + imgUrl, className: 'galleryImg', src: imgUrl }) },
-	noImages: function () { return React.createElement("p", { key: 'gallery' }, 'No images') },
+	renderGalleryImg(imgUrl) { return React.createElement("img", { key: 'img' + imgUrl, className: 'galleryImg', src: imgUrl }) }
+	noImages() { return React.createElement("p", { key: 'gallery' }, 'No images') }
 
-	renderMainLink: function () {
+	renderMainLink() {
 		if (isset(this.props.itemDetail.links.main)) {
 			return (
 				React.createElement("p", { key: 'mainLink', id: 'mainLink' },
@@ -36,9 +59,9 @@ var ItemDetail = React.createClass({
 		}
 		else
 			return []
-	},
+	}
 
-	renderControls: function () {
+	renderControls() {
 		return (
 			React.createElement("div", { key: 'galleryControls' },
 				React.createElement("span", { className: 'fa_button', id: 'galleryBack', onClick: this.buttonHandler },
@@ -49,26 +72,23 @@ var ItemDetail = React.createClass({
 				)
 			)
 		)
-	},
+	}
 
-	buttonHandler: function (e) {
-		var id = (isset(e.target.id) && (e.target.id === 'galleryBack' || e.target.id === 'galleryForward')) ? e.target.id : e.target.parentNode.id;
+	buttonHandler(e) {
+		var id = (isset(e.target.id) &&(e.target.id === 'galleryBack' || e.target.id === 'galleryForward')) ? e.target.id : e.target.parentNode.id;
 
 		if (id === 'galleryForward')
-			var newPointerPosition = (this.state.galleryPointer + 3 < this.props.wikiImages.length) ? this.state.galleryPointer + 1 : false;
+			var newPointerPosition =(this.state.galleryPointer + 3 < this.props.wikiImages.length) ? this.state.galleryPointer + 1 : false;
 		else
-			var newPointerPosition = (this.state.galleryPointer - 1 < 0) ? false : this.state.galleryPointer - 1;
+			var newPointerPosition =(this.state.galleryPointer - 1 < 0) ? false : this.state.galleryPointer - 1;
 
 		if (newPointerPosition)
 			this.setState({ galleryPointer: newPointerPosition });
-	},
+	}
 
-	renderExtract: function (extract, i) { return React.createElement("p", { key: 'extracts_' + i }, extract) },
+	renderExtract(extract, i) { return React.createElement("p", { key: 'extracts_' + i }, extract) }
 
-	render: function () {
-		if (typeof window !== 'undefined')
-			var windowDims = getViewportSize();
-
+	render() {
 		if (this.props.itemDetail !== false) {
 			if (isset(this.props.itemDetail.links.related))
 				var itemLinks = this.props.itemDetail.links.related.map(this.renderRelatedLink);
@@ -84,7 +104,7 @@ var ItemDetail = React.createClass({
 
 			if (this.props.wikiImages !== false && this.props.wikiImages.length > 0) {
 				var gallery = [];
-				var n = (this.state.galleryPointer + 3 <= this.props.wikiImages.length) ? this.state.galleryPointer + 3 : this.props.wikiImages.length;
+				var n =(this.state.galleryPointer + 3 <= this.props.wikiImages.length) ? this.state.galleryPointer + 3 : this.props.wikiImages.length;
 
 				for (var i = this.state.galleryPointer; i < n; i++) {
 					var img = this.renderGalleryImg(this.props.wikiImages[i]);
@@ -101,10 +121,10 @@ var ItemDetail = React.createClass({
 			else
 				extract = [];
 
-			var controls = (gallery.length > 0) ? this.renderControls() : [];
+			var controls =(gallery.length > 0) ? this.renderControls() : [];
 
 			return (
-				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500, style: { maxHeight: (typeof window !== 'undefined') ? windowDims.height - 20 : 600 } },
+				React.createElement(ReactCSSTransitionGroup, { id: "itemDetail", transitionName: 'itemDetailTransition', transitionAppear: true, transitionAppearTimeout: 500, transitionEnterTimeout: 500, transitionLeaveTimeout: 500, style: { maxHeight: this.state.maxHeight } },
 					React.createElement("h3", null, this.props.itemDetail.text),
 					React.createElement("div", null,
 						extract,
@@ -123,6 +143,4 @@ var ItemDetail = React.createClass({
 			)
 		}
 	}
-});
-
-module.exports = ItemDetail;
+}
