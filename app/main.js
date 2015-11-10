@@ -1,8 +1,8 @@
-var React = require('react'),
-	ReactDOM = require('react-dom'),
-	axios = require('axios'),
-	timelineJsonData = require('./data/timeline.json'),
-	HoH = require('./js/dispatcher.js');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+import TimelineData from './data/timeline.json';
+import HoH from './js/dispatcher.js';
 
 window.app = (function() {
 	var requiredFeatures = {
@@ -22,7 +22,7 @@ window.app = (function() {
 		var params = { pointer: 0, year: parts[0], position: parts[1], name: parts[2] };
 
     var initData = {
-      itemDetail: timelineJsonData[params.year][params.position],
+      itemDetail: TimelineData[params.year][params.position],
       wikiData: false,
       wikiImages: []
     };
@@ -35,7 +35,7 @@ window.app = (function() {
 				initData.wikiData = output.data.query.pages[pageId];
 
 				// React.renderToString takes your component and generates rendered markup. SEO friendliness all the way
-				return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: params, initwikidata: initData }), document.getElementById('hoh'));
+				return ReactDOM.render(React.createElement(HoH, { timeline: TimelineData, initparams: params, initwikidata: initData }), document.getElementById('hoh'));
 			}
 		})
 		.catch(function (e) {
@@ -47,12 +47,11 @@ window.app = (function() {
 		var parts = window.location.pathname.replace('/history-of-humanity/', '').split('/');
 
 		if (parseInt(parts[1]) > 0)
-			return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
+			return ReactDOM.render(React.createElement(HoH, { timeline: TimelineData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
 		else
 			window.location.replace("https://labs.builtvisible.com/history-of-humanity/");
 	}
 	else {
-		return ReactDOM.render(React.createElement(HoH, { timeline: timelineJsonData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
+		return ReactDOM.render(React.createElement(HoH, { timeline: TimelineData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));
 	}
-
 })();

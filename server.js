@@ -1,9 +1,11 @@
+require("babel-core/register")({ presets: ['es2015', 'react', 'stage-1'] })
+
 var express = require('express'),
 	path = require('path'),
 	app = express(),
 	ip = '0.0.0.0',
 	port = 3000,
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser')
 
 // Include static assets
 app.use(express.static(path.join(__dirname, 'public')));

@@ -1,20 +1,34 @@
 function isset (obj) { return typeof obj !== 'undefined'; }
 
-var React = require('react');
+import React from 'react';
 
-var ItemList = React.createClass({
-	displayName: "ItemList",
-	jumping: false,
+export default class ItemList extends React.Component {
+	constructor() {
+		super();
 
-	getInitialState: function () { return { jumpTo: false } },
+		this.componentDidMount = this.componentDidMount.bind(this);
+		this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+		this.scrollAnimate = this.scrollAnimate.bind(this);
+		this.renderYear = this.renderYear.bind(this);
+		this.renderItemThumbnail = this.renderItemThumbnail.bind(this);
+		this.renderItem = this.renderItem.bind(this);
+		this.itemHandler = this.itemHandler.bind(this);
+		this.renderItems = this.renderItems.bind(this);
+		this.loadingItems = this.loadingItems.bind(this);
+		this.noItems = this.noItems.bind(this);
 
-	componentWillReceiveProps: function (nextProps) {
+		this.state = { jumpTo: false };
+	}
+
+	componentDidMount() { this.jumping = false }
+
+	componentWillReceiveProps(nextProps) {
 		if (this.props.highlightLatLong === false && nextProps.highlightLatLong !== false || this.props.highlightLatLong.lat !== nextProps.highlightLatLong.lat)
 			this.setState({ jumpTo: false });
-	},
+	}
 
 	//gist.github.com/dezinezync/5487119
-	scrollAnimate: function (Y, duration) {
+	scrollAnimate(Y, duration) {
 		var start = Date.now(),
 			elem = document.documentElement.scrollTop ? document.documentElement : document.body,
 			from = elem.scrollTop;
@@ -22,38 +36,38 @@ var ItemList = React.createClass({
 		if (from === Y)
 			return; // Prevent scrolling to the Y point if already there
 
-		function min (a,b) { return a < b ? a : b; }
+		function min(a,b) { return a < b ? a : b; }
 
 		function scroll(timestamp) {
 			var currentTime = Date.now(),
-				t = min(1, ((currentTime - start) / duration)),
-				easedT = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+				t = min(1,((currentTime - start) / duration)),
+				easedT = t < .5 ? 2 * t * t : -1 +(4 - 2 * t) * t;
 
-			elem.scrollTop = (easedT * (Y - from)) + from;
+			elem.scrollTop = (easedT *(Y - from)) + from;
 
 			if (t < 1)
 				requestAnimationFrame(scroll);
 		}
 
 		requestAnimationFrame(scroll)
-	},
+	}
 
-	renderYear: function (x, y, year) { return React.createElement("li", { key: 'year' + x + y + year, className: 'yearTitle' }, year) },
+	renderYear(x, y, year) { return React.createElement("li", { key: 'year' + x + y + year, className: 'yearTitle' }, year) }
 
-	renderItemThumbnail: function (item, key) {
+	renderItemThumbnail(item, key) {
 		var picKey = 'thumb' + key;
 
 		return (isset(item.thumbnail) && item.thumbnail !== '')
 			? React.createElement("img", { key: picKey, className: 'thumbnail', src: item.thumbnail })
 			: [];
-	},
+	}
 
-	renderItem: function (item, i) {
+	renderItem(item, i) {
 		var key = 0, i, chr, len;
 
 		for (i = 0, len = item.text.length; i < len; i++) {
 			chr	 = item.text.charCodeAt(i);
-			key	= ((key << 5) - key) + chr;
+			key	=((key << 5) - key) + chr;
 			key |= 0; // Convert to 32bit integer
 		}
 
@@ -81,7 +95,7 @@ var ItemList = React.createClass({
 			className += ' highlightClick';
 
 
-		var title = (isset(item.links) && isset(item.links.main) && isset(item.links.main.link)) ? item.links.main.link.replace('//en.wikipedia.org/wiki/', '') : '';
+		var title =(isset(item.links) && isset(item.links.main) && isset(item.links.main.link)) ? item.links.main.link.replace('//en.wikipedia.org/wiki/', '') : '';
 
 		return (
 			React.createElement("li", { key: key, id: key, 'data-year': item.year, 'data-position': item.position, className: className, onClick: this.itemHandler },
@@ -94,9 +108,9 @@ var ItemList = React.createClass({
 				)
 			)
 		)
-	},
+	}
 
-	itemHandler: function (e) {
+	itemHandler(e) {
 		if (isset(e.target.id) && e.target.id !== '')
 			var newJumpTo = e.target.id;
 		else if (isset(e.target.parentNode.id) && e.target.parentNode.id !== '')
@@ -110,9 +124,9 @@ var ItemList = React.createClass({
 		}
 
 		this.props.itemHandler(e);
-	},
+	}
 
-	renderItems: function (item) {
+	renderItems(item) {
 		var relevantItems = [];
 
 		if (this.props.items.length > 0)
@@ -137,17 +151,12 @@ var ItemList = React.createClass({
 		this.jumping = false;
 
 		return relevantItems;
-	},
+	}
 
-	loadingItems: function () {
-		return React.createElement("li", { className: 'yearTitle' }, 'Loading data')
-	},
+	loadingItems() { return React.createElement("li", { className: 'yearTitle' }, 'Loading data') }
+	noItems() { return React.createElement("li", { className: 'yearTitle' }, 'No data for your selection') }
 
-	noItems: function () {
-		return React.createElement("li", { className: 'yearTitle' }, 'No data for your selection')
-	},
-
-	render: function () {
+	render() {
 		if (this.props.items === false)
 			var itemsList = this.loadingItems()
 		else if (this.props.items.length > 0)
@@ -163,6 +172,4 @@ var ItemList = React.createClass({
 			)
 		)
 	}
-});
-
-module.exports = ItemList;
+}

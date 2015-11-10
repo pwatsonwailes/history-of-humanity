@@ -1,42 +1,50 @@
 // based on //raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
-var React = require('react');
+import React from 'react';
 
-var InputSlider = React.createClass({
-	displayName: 'InputSlider',
+export default class InputSlider extends React.Component {
+	constructor() {
+		super();
 
-	getInitialState: function () { return { mobile: (typeof window !== 'undefined') ? mobileCheck() : false } },
+		this.getPosition = this.getPosition.bind(this);
+		this.handleSliderClick = this.handleSliderClick.bind(this);
+		this.handleMoveStart = this.handleMoveStart.bind(this);
+		this.handleDrag = this.handleDrag.bind(this);
+		this.handleDragEnd = this.handleDragEnd.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+		this.getPos = this.getPos.bind(this);
+		this.changeValue = this.changeValue.bind(this);
 
-	getDefaultProps: function () {
-		return {
-			axis: 'x',
-			xMin: 0,
-			yMin: 0
+		this.state = { mobile:(typeof window !== 'undefined') ? mobileCheck() : false };
+	}
+
+	getPosition() {
+		if (this.props.axis !== 'x') {
+			var top = (this.props.y - this.props.yMin) /(this.props.yMax - this.props.yMin) * 100;
+
+			if (top > 100) top = 100;
+			if (top < 0) top = 0;
 		}
-	},
+		else
+			var top = 0;
 
-	getPosition: function () {
-		var top = (this.props.y - this.props.yMin) / (this.props.yMax - this.props.yMin) * 100;
-		var left = (this.props.x - this.props.xMin) / (this.props.xMax - this.props.xMin) * 100;
+		if (this.props.axis !== 'y') {
+			var left = (this.props.x - this.props.xMin) /(this.props.xMax - this.props.xMin) * 100;
 
-		if (top > 100) top = 100;
-		if (top < 0) top = 0;
-		if (this.props.axis === 'x') top = 0;
-		top += '%';
+			if (left > 100) left = 100;
+			if (left < 0) left = 0;
+		}
+		else
+			var left = 0;
 
-		if (left > 100) left = 100;
-		if (left < 0) left = 0;
-		if (this.props.axis === 'y') left = 0;
-		left += '%';
+		return { top: top + '%', left: left + '%' };
+	}
 
-		return { top: top, left: left };
-	},
-
-	handleSliderClick: function (e) {
+	handleSliderClick(e) {
 		e.stopPropagation();
 		e.nativeEvent.stopImmediatePropagation();
-	},
+	}
 
-	handleMoveStart: function (e) {
+	handleMoveStart(e) {
 		e.preventDefault();
 		var dom = this.refs.handle.getDOMNode();
 
@@ -58,14 +66,14 @@ var InputSlider = React.createClass({
 			document.addEventListener('touchmove', this.handleDrag);
 			document.addEventListener('touchend', this.handleDragEnd);
 		}
-	},
+	}
 
-	handleDrag: function (e) {
+	handleDrag(e) {
 		e.preventDefault();
 		this.changeValue(this.getPos(e));
-	},
+	}
 
-	handleDragEnd: function (e) {
+	handleDragEnd(e) {
 		e.preventDefault();
 		
 		if (!this.state.mobile) {
@@ -78,18 +86,18 @@ var InputSlider = React.createClass({
 		}
 
 		if (this.props.onDragEnd) this.changeValue(this.getPos(e), true);
-	},
+	}
 
-	handleClick: function (e) {
+	handleClick(e) {
 		var rect = this.getDOMNode().getBoundingClientRect();
 
 		this.changeValue({
 			left: e.clientX - rect.left,
 			top: e.clientY - rect.top
 		}, true);
-	},
+	}
 
-	getPos: function (e) {
+	getPos(e) {
 		if (!this.state.mobile) {
 			var posX = e.clientX + this.start.x - this.offset.x;
 			var posY = e.clientY + this.start.y - this.offset.y;
@@ -103,9 +111,9 @@ var InputSlider = React.createClass({
 			left: posX,
 			top: posY
 		};
-	},
+	}
 
-	changeValue: function (pos, dragEnd) {
+	changeValue(pos, dragEnd) {
 		if (!this.props.onChange) return;
 
 		var rect = this.getDOMNode().getBoundingClientRect();
@@ -123,18 +131,18 @@ var InputSlider = React.createClass({
 		var x = 0;
 		var y = 0;
 		if (axis === 'x' || axis === 'xy') {
-			x = left / width * (this.props.xMax - this.props.xMin) + this.props.xMin;
+			x = left / width *(this.props.xMax - this.props.xMin) + this.props.xMin;
 		}
 		if (axis === 'y' || axis === 'xy') {
-			y = top / height * (this.props.yMax - this.props.yMin) + this.props.yMin;
+			y = top / height *(this.props.yMax - this.props.yMin) + this.props.yMin;
 		}
 
 		this.props.onChange({ x: x, y: y, name: this.props.name });
 
 		if (this.props.onDragEnd && dragEnd) this.props.onDragEnd({ x: x, y: y, name: this.props.name });
-	},
+	}
 
-	render: function () {
+	render() {
 		var pos = this.getPosition();
 		var axis = this.props.axis;
 		var valueStyle = {};
@@ -149,6 +157,4 @@ var InputSlider = React.createClass({
 			)
 		)
 	}
-});
-
-module.exports = InputSlider;
+}
