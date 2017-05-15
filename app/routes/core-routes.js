@@ -9,6 +9,7 @@ module.exports = function(app) {
 	app.get('/', function(req, res) {
 		res.render('index.ejs', {
 			reactTitle: '',
+			reactPath: '',
 			reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
 				timeline: TimelineData,
 				initparams: { pointer: 0 }
@@ -20,6 +21,7 @@ module.exports = function(app) {
 		if (req.params.n > 0) {
 			res.render('index.ejs', {
 				reactTitle: 'Page ' + req.params.n + ' | ',
+				reactPath: 'p/' + req.params.n,
 				reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
 					timeline: TimelineData,
 					initparams: { pointer: req.params.n - 1 }
@@ -27,7 +29,7 @@ module.exports = function(app) {
 			});
 		}
 		else
-			res.redirect(301, 'https://labs.builtvisible.com/history-of-humanity/')
+			res.redirect(301, 'https://wail.es/history-of-humanity/')
 	});
 
 	app.get('/:year/:position/:name', function(req, res) {
@@ -39,13 +41,14 @@ module.exports = function(app) {
 
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + req.params.name;
 
-		axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&"))).then(function (output) {
+		axios.get('https://wail.es/history/api.php?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&"))).then(function (output) {
 			if (typeof output.data.query.pages !== 'undefined') {
 				var pageId = Object.keys(output.data.query.pages);
 				initData.wikiData = output.data.query.pages[pageId];
 
 				res.render('index.ejs', {
 					reactTitle: initData.itemDetail.text + ' | ',
+					reactPath: req.params.year + '/' + req.params.position + '/' + req.params.name,
 					reactOutput: ReactDOMServer.renderToString(React.createElement(HoH, {
 						timeline: TimelineData,
 						initparams: req.params,

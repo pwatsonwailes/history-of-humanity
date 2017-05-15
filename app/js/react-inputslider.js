@@ -89,7 +89,7 @@ export default class InputSlider extends React.Component {
 	}
 
 	handleClick(e) {
-		var rect = this.getDOMNode().getBoundingClientRect();
+		var rect = ReactDOM.findDOMNode().getBoundingClientRect();
 
 		this.changeValue({
 			left: e.clientX - rect.left,
@@ -116,7 +116,7 @@ export default class InputSlider extends React.Component {
 	changeValue(pos, dragEnd) {
 		if (!this.props.onChange) return;
 
-		var rect = this.getDOMNode().getBoundingClientRect();
+		var rect = ReactDOM.findDOMNode().getBoundingClientRect();
 		var width = rect.width;
 		var height = rect.height;
 		var left = pos.left;

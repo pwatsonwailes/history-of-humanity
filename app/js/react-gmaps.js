@@ -136,12 +136,11 @@ class GMap extends React.Component {
 		for (var i = 0; i < this.markers.length; i++) {
 			this.markers[i].setMap(map);
 			google.maps.event.addListener(this.markers[i], "click", function(e) {
-				var latLong = {};
-
-				latLong.lat = this.position.G.toFixed(1);
-				latLong.long = this.position.K.toFixed(1);
-				self.props.handleMarkerClick(latLong);
-			});
+				self.props.handleMarkerClick({
+					lat: this.position.lat().toFixed(1),
+					long: this.position.lng().toFixed(1)
+				})
+			})
 		}
 	}
 
@@ -157,9 +156,9 @@ class GMap extends React.Component {
 			mapTypeControl: !1,
 			zoom: this.props.initialZoom,
 			center: new google.maps.LatLng(this.props.centerLat, this.props.centerLng)
-		};
+		}
 
-		return new google.maps.Map(this.refs.mapCanvas, mapOptions);
+		return new google.maps.Map(this.refs.mapCanvas, mapOptions)
 	}
 
 	// If the map position is out of range, move it back

@@ -2,13 +2,11 @@
 
 A brief overview of what humanity has been up to since 1750, powered by React.JS and the Wikipedia API
 
-Prototype demo @ https://builtvisible.com/history-of-humanity-prototype/
+Demo @ https://wail.es/history-of-humanity/
 
 Prototype blog post @ https://builtvisible.com/building-content-in-react/
 
-Final result demo @ https://builtvisible.com/history-of-humanity/
-
-Final result blog post @ https://builtvisible.com/build-seo-friendly-universal-js-apps-reactjs/
+Final result blog post @ https://wail.es/build-seo-friendly-universal-js-apps-reactjs/
 
 ## Notes
 

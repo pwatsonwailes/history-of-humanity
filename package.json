@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Builtvisible/history-of-humanity.git"
+    "url": "https://github.com/pwatsonwailes/history-of-humanity.git"
   },
   "author": "petewailes",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/Builtvisible/history-of-humanity/issues"
+    "url": "https://github.com/pwatsonwailes/history-of-humanity/issues"
   },
-  "homepage": "https://github.com/Builtvisible/history-of-humanity",
+  "homepage": "https://github.com/pwatsonwailes/history-of-humanity",
   "devDependencies": {
     "browserify": "^12.x.x",
     "uglifyify": "3.0.x"

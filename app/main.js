@@ -29,7 +29,7 @@ window.app = (function() {
 
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + params.name;
 
-		axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&"))).then(function (output) {
+		axios.get('https://wail.es/history/api.php?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&"))).then(function (output) {
 			if (isset(output.data.query.pages)) {
 				var pageId = Object.keys(output.data.query.pages);
 				initData.wikiData = output.data.query.pages[pageId];
@@ -49,7 +49,7 @@ window.app = (function() {
 		if (parseInt(parts[1]) > 0)
 			return ReactDOM.render(React.createElement(HoH, { timeline: TimelineData, initparams: { pointer: parseInt(parts[1]) - 1, year: false, position: false, name: false } }), document.getElementById('hoh'));
 		else
-			window.location.replace("https://labs.builtvisible.com/history-of-humanity/");
+			window.location.replace("https://wail.es/history-of-humanity/");
 	}
 	else {
 		return ReactDOM.render(React.createElement(HoH, { timeline: TimelineData, initparams: { pointer: 0, year: false, position: false, name: false } }), document.getElementById('hoh'));

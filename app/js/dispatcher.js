@@ -4,7 +4,6 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 
-import Social from './react-social.js';
 import Controls from './react-controls.js';
 import GMap from './react-gmaps.js';
 import ItemList from './react-itemlist.js';
@@ -65,9 +64,9 @@ export default class HoH extends React.Component {
 
 
 		if (i > 0)
-			History.pushState(null, 'Page ' + page + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + page);
+			History.pushState(null, 'Page ' + page + ' | Modern History of Humanity', '/history-of-humanity/p/' + page);
 		else
-			History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+			History.pushState(null, 'Modern History of Humanity', '/history-of-humanity/');
 	}
 
 	updateItems(dateType, newDate, newTag) {
@@ -157,7 +156,7 @@ export default class HoH extends React.Component {
 		this.setState({ itemDetail: itemData });
 
 		if (!isset(updateHistory) || updateHistory !== false)
-			History.pushState(null, itemData.text + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/' + year + '/' + position + '/' + wikiTitle);
+			History.pushState(null, itemData.text + ' | Modern History of Humanity', '/history-of-humanity/' + year + '/' + position + '/' + wikiTitle);
 	}
 
 	hideItemDetail(e, updateHistory) {
@@ -168,9 +167,9 @@ export default class HoH extends React.Component {
 
 			if (!isset(updateHistory) || updateHistory !== false) {
 				if (this.state.pointer === 0)
-					History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+					History.pushState(null, 'Modern History of Humanity', '/history-of-humanity/');
 				else
-					History.pushState(null, 'Page ' + n + ' | History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + n);
+					History.pushState(null, 'Page ' + n + ' | Modern History of Humanity', '/history-of-humanity/p/' + n);
 			}
 		}
 	}
@@ -178,7 +177,7 @@ export default class HoH extends React.Component {
 	setWikiData(wikiTitle) {
 		var self = this;
 		var wikiApiLink = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|images&exintro=&explaintext=&titles=' + wikiTitle;
-		var wikidata = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&")))
+		var wikidata = axios.get('https://wail.es/history/api.php?url=' + encodeURIComponent(wikiApiLink.replace(/&amp;/g, "&")))
 
 		wikidata.then(function(res) {
 			var newState = { wikiData: false, wikiImages: false };
@@ -201,7 +200,7 @@ export default class HoH extends React.Component {
 						}
 
 						var imgLink = 'https://en.wikipedia.org/w/api.php?action=query&titles=Image:' + title + '&prop=imageinfo&iiprop=url&format=json';
-						var wikiImgs = axios.get('https://apis.builtvisible.com/history_of_humanity/?url=' + encodeURIComponent(imgLink.replace(/&amp;/g, "&")));
+						var wikiImgs = axios.get('https://wail.es/history/api.php?url=' + encodeURIComponent(imgLink.replace(/&amp;/g, "&")));
 
 						if (i === 0) {
 							wikiImgs.then(function(imgRes) {
@@ -269,9 +268,9 @@ export default class HoH extends React.Component {
 			this.setState({ pointer: newPointer });
 
 			if (newPointer === 0)
-				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/');
+				History.pushState(null, 'Modern History of Humanity', '/history-of-humanity/');
 			else
-				History.pushState(null, 'History of Modern Humanity | Builtvisible', '/history-of-humanity/p/' + newPointer);
+				History.pushState(null, 'Modern History of Humanity', '/history-of-humanity/p/' + newPointer);
 		}
 	}
 
@@ -358,7 +357,6 @@ export default class HoH extends React.Component {
 					id: "hohContainer",
 					onClick: this.hideItemDetail
 				},
-				React.createElement(Social, null),
 				React.createElement("div", { id: "mapAndControls" },
 					React.createElement(GMap, {
 						initialZoom: 3,
