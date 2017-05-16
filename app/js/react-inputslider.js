@@ -1,5 +1,6 @@
 // based on //raw.githubusercontent.com/wangzuo/react-input-slider/gh-pages/dist/input-slider.js
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 export default class InputSlider extends React.Component {
 	constructor() {
@@ -89,7 +90,7 @@ export default class InputSlider extends React.Component {
 	}
 
 	handleClick(e) {
-		var rect = ReactDOM.findDOMNode().getBoundingClientRect();
+		var rect = this.refs[this.props.name].getBoundingClientRect();
 
 		this.changeValue({
 			left: e.clientX - rect.left,
@@ -116,7 +117,7 @@ export default class InputSlider extends React.Component {
 	changeValue(pos, dragEnd) {
 		if (!this.props.onChange) return;
 
-		var rect = ReactDOM.findDOMNode().getBoundingClientRect();
+		var rect = this.refs[this.props.name].getBoundingClientRect();
 		var width = rect.width;
 		var height = rect.height;
 		var left = pos.left;
@@ -151,7 +152,7 @@ export default class InputSlider extends React.Component {
 		if (axis === 'y') valueStyle.height = pos.top;
 
 		return (
-			React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, onClick: this.handleClick, onTouchStart: this.handleClick },
+			React.createElement("div", { className: 'slider slider_' + axis, id: this.props.name, ref: this.props.name, onClick: this.handleClick, onTouchStart: this.handleClick },
 				React.createElement('div', { className: 'value', style: valueStyle }),
 				React.createElement('div', { className: 'handle', ref: 'handle', onMouseDown: this.handleMoveStart, onTouchStart: this.handleMoveStart, onClick: this.handleSliderClick, style: pos })
 			)
